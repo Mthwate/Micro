@@ -1,0 +1,6 @@
+evaluationDependsOn(':common')
+
+dependencies {
+	compile project(':common')
+	compile 'com.google.code.gson:gson:2.3.1'
+}

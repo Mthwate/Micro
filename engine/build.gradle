@@ -1,0 +1,4 @@
+dependencies {
+	compile "com.jme3:jme3-core:$jme_version"
+	compile 'com.mthwate.datlib:datlib:1.2.1'
+}
