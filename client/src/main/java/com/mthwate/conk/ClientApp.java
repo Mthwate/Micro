@@ -1,22 +1,11 @@
 package com.mthwate.conk;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
-import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.BlenderKey;
-import com.jme3.asset.ModelKey;
 import com.jme3.asset.plugins.ClasspathLocator;
-import com.jme3.collision.CollisionResults;
 import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.plugins.blender.BlenderLoader;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.LeftClickAction;
@@ -24,8 +13,6 @@ import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.conk.info.TextureInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 
 /**
  * @author mthwate
@@ -70,6 +57,8 @@ public class ClientApp extends SimpleApplication {
 		}
 		*/
 
+		//flyCam.setDragToRotate(true);
+		//inputManager.setCursorVisible(true);
 
 		assetManager.registerLocator("assets/textures", ClasspathLocator.class);
 		assetManager.registerLocator("assets/models", ClasspathLocator.class);
@@ -80,19 +69,15 @@ public class ClientApp extends SimpleApplication {
 
 		BlockInfo block = new BlockInfo(new TextureInfo("dirt"));
 
-		int max = 16 * (5 * 2 + 1);
+		int max = 16 * (1 * 2 + 1);
 
-
-		for (int x = 16; x < max; x++) {
-			for (int y = 16; y < max; y++) {
-				for (int z = 16; z < max; z++) {
+		for (int x = 0; x < max * 2; x++) {
+			for (int y = 0; y < max; y++) {
+				for (int z = 0; z < max; z++) {
 					world.setBlock(x, y, z, block);
 				}
 			}
-			System.out.println(x + "/" + max);
 		}
-
-		world.setBlock(1, 1, 1, block);
 
 		//world.setBlock(0, 0, 0, new BlockInfo(new TextureInfo("dirt")));
 		//world.setBlock(0, 1, 0, new BlockInfo(new TextureInfo("dirt"), "Oto"));
@@ -136,6 +121,7 @@ public class ClientApp extends SimpleApplication {
 		*/
 
 		cam.setLocation(new Vector3f(0, 2, -10));
+		cam.lookAtDirection(new Vector3f(1, 1, 1), new Vector3f(0, 1, 0));
 		flyCam.setMoveSpeed(10);
 
 		AmbientLight al = new AmbientLight();
