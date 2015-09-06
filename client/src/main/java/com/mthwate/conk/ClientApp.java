@@ -2,6 +2,7 @@ package com.mthwate.conk;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
+import com.jme3.font.BitmapText;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -71,9 +72,9 @@ public class ClientApp extends SimpleApplication {
 
 		int max = 16 * (1 * 2 + 1);
 
-		for (int x = 0; x < max * 2; x++) {
-			for (int y = 0; y < max; y++) {
-				for (int z = 0; z < max; z++) {
+		for (int x = -10; x < max; x++) {
+			for (int y = -10; y < max; y++) {
+				for (int z = -10; z < max; z++) {
 					world.setBlock(x, y, z, block);
 				}
 			}
@@ -120,8 +121,8 @@ public class ClientApp extends SimpleApplication {
 
 		*/
 
-		cam.setLocation(new Vector3f(0, 2, -10));
-		cam.lookAtDirection(new Vector3f(1, 1, 1), new Vector3f(0, 1, 0));
+		cam.setLocation(new Vector3f(0, 2, -15));
+		cam.lookAtDirection(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
 		flyCam.setMoveSpeed(10);
 
 		AmbientLight al = new AmbientLight();
@@ -133,6 +134,16 @@ public class ClientApp extends SimpleApplication {
 		//viewPort.setBackgroundColor(ColorRGBA.White);
 
 
+		initCrossHairs();
+	}
+
+	private void initCrossHairs() {
+		guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+		BitmapText ch = new BitmapText(guiFont, false);
+		ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+		ch.setText("+");
+		ch.setLocalTranslation(settings.getWidth() / 2 - ch.getLineWidth()/2, settings.getHeight() / 2 + ch.getLineHeight()/2, 0);
+		guiNode.attachChild(ch);
 	}
 
 	@Override

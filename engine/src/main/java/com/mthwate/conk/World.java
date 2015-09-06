@@ -7,6 +7,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.datlib.math.set.Set3i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -14,6 +16,8 @@ import java.util.*;
  * @author mthwate
  */
 public class World extends AbstractAppState {
+
+	private static final Logger log = LoggerFactory.getLogger(World.class);
 
 	private static final int CHUNK_SIZE = 16;
 
@@ -69,43 +73,7 @@ public class World extends AbstractAppState {
 	}
 
 	public void setBlock(int x, int y, int z, BlockInfo block) {
-
-		int tx = x;
-		int ty = y;
-		int tz = z;
-
-		if (x < 0) {
-			tx -= CHUNK_SIZE - 1;
-		}
-		if (y < 0) {
-			ty -= CHUNK_SIZE - 1;
-		}
-		if (z < 0) {
-			tz -= CHUNK_SIZE - 1;
-		}
-
-		int cx = tx / CHUNK_SIZE;
-		int cy = ty / CHUNK_SIZE;
-		int cz = tz / CHUNK_SIZE;
-
-
-		tx %= CHUNK_SIZE;
-		ty %= CHUNK_SIZE;
-		tz %= CHUNK_SIZE;
-
-		if (x < 0) {
-			tx = CHUNK_SIZE - tx - 1;
-		}
-		if (y < 0) {
-			ty = CHUNK_SIZE - ty - 1;
-		}
-		if (z < 0) {
-			tz = CHUNK_SIZE - tz - 1;
-		}
-
-
-
-		Set3i pos = new Set3i(cx, cy, cz);
+		Set3i pos = new Set3i(getChunk(x), getChunk(y), getChunk(z));
 
 		synchronized (chunks) {
 			Chunk chunk = chunks.get(pos);
@@ -113,48 +81,12 @@ public class World extends AbstractAppState {
 				chunk = new Chunk(CHUNK_SIZE);
 				chunks.put(pos, chunk);
 			}
-
-			chunk.setBlock(tx, ty, tz, block);
+			chunk.setBlock(getLocal(x), getLocal(y), getLocal(z), block);
 		}
 	}
 
 	public BlockInfo getBlock(int x, int y, int z) {
-
-		int tx = x;
-		int ty = y;
-		int tz = z;
-
-		if (x < 0) {
-			tx -= CHUNK_SIZE - 1;
-		}
-		if (y < 0) {
-			ty -= CHUNK_SIZE - 1;
-		}
-		if (z < 0) {
-			tz -= CHUNK_SIZE - 1;
-		}
-
-		int cx = tx / CHUNK_SIZE;
-		int cy = ty / CHUNK_SIZE;
-		int cz = tz / CHUNK_SIZE;
-
-
-		tx %= CHUNK_SIZE;
-		ty %= CHUNK_SIZE;
-		tz %= CHUNK_SIZE;
-
-		if (x < 0) {
-			tx = CHUNK_SIZE - tx - 1;
-		}
-		if (y < 0) {
-			ty = CHUNK_SIZE - ty - 1;
-		}
-		if (z < 0) {
-			tz = CHUNK_SIZE - tz - 1;
-		}
-
-
-		Set3i pos = new Set3i(cx, cy, cz);
+		Set3i pos = new Set3i(getChunk(x), getChunk(y), getChunk(z));
 
 		BlockInfo block;
 
@@ -164,9 +96,35 @@ public class World extends AbstractAppState {
 				chunk = new Chunk(CHUNK_SIZE);
 				chunks.put(pos, chunk);
 			}
-			block = chunk.getBlock(tx, ty, tz);
+			block = chunk.getBlock(getLocal(x), getLocal(y), getLocal(z));
 		}
 
 		return block;
+	}
+
+	private static int getLocal(int i) {
+		int n = i;
+
+		if (n < 0) {
+			n -= CHUNK_SIZE - 1;
+		}
+
+		n %= CHUNK_SIZE;
+
+		if (i < 0) {
+			n = CHUNK_SIZE + n - 1;
+		}
+
+		return n;
+	}
+
+	private static int getChunk(int i) {
+		if (i < 0) {
+			i -= CHUNK_SIZE - 1;
+		}
+
+		i /= CHUNK_SIZE;
+
+		return i;
 	}
 }

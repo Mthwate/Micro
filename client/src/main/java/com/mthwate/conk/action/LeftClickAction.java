@@ -41,25 +41,25 @@ public class LeftClickAction extends ActionHandler {
 		world.getNode().collideWith(ray, results);
 		if (results.size() > 0) {
 			Vector3f pos = results.getClosestCollision().getContactPoint();
-			log.info("Collision at {}", pos);
 			Set3i coords = new Set3i(0, 0, 0);
 			for (int i = 0; i < 3; i++) {
-				int coord = (int) (pos.get(i) + 0.5);
-				if (Math.abs(Math.abs(pos.get(i) - coord) - 0.5) < 0.000001) {
-					coord = (int) pos.get(i);
-					if (cam.getLocation().get(i) < pos.get(i)) {
-						coord++;
-					}
-				}
+				int coord = pick(pos.get(i), cam.getLocation().get(i));
 				switch (i) {
 					case 0: coords.addLocal(coord, 0, 0); break;
 					case 1: coords.addLocal(0, coord, 0); break;
 					case 2: coords.addLocal(0, 0, coord); break;
 				}
 			}
-			log.info("Block at {}", coords);
 			world.setBlock(coords.getX(), coords.getY(), coords.getZ(), null);
 		}
+	}
+
+	private static int pick(float f, float c) {
+		int result = (int) Math.floor(f + 0.5);
+		if (c > f && (Math.abs(Math.abs(f - ((int) f)) - 0.5) < 0.00001)) {
+			result--;
+		}
+		return result;
 	}
 
 	@Override
