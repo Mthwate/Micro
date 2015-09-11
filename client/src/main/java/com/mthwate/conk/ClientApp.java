@@ -1,22 +1,16 @@
 package com.mthwate.conk;
 
-import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
-import com.jme3.asset.BlenderKey;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.font.BitmapText;
 import com.jme3.light.AmbientLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.LeftClickAction;
+import com.mthwate.conk.action.RightClickAction;
 import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.conk.info.TextureInfo;
 import org.slf4j.Logger;
@@ -134,6 +128,7 @@ public class ClientApp extends SimpleApplication {
 		//rootNode.addLight(al);
 
 		ActionUtils.register(inputManager, new LeftClickAction(cam, world));
+		ActionUtils.register(inputManager, new RightClickAction(cam, world));
 
 		//viewPort.setBackgroundColor(ColorRGBA.White);
 
