@@ -12,7 +12,7 @@ public class MaterialInfo {
 	private final String textureType;
 
 	public MaterialInfo() {
-		this("Common/MatDefs/Light/Lighting.j3md", "DiffuseMap");
+		this("Common/MatDefs/Misc/Unshaded.j3md", "ColorMap");
 	}
 
 	public MaterialInfo(String matDef, String textureType) {

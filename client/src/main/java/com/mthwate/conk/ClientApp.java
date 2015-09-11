@@ -1,12 +1,19 @@
 package com.mthwate.conk;
 
+import com.jme3.animation.AnimChannel;
+import com.jme3.animation.AnimControl;
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.BlenderKey;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.font.BitmapText;
 import com.jme3.light.AmbientLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.LeftClickAction;
@@ -66,19 +73,38 @@ public class ClientApp extends SimpleApplication {
 		assetManager.registerLoader(BlenderModelLoader.class, "blend");
 
 
+
+
+
+
 		world = new World();
 
-		BlockInfo block = new BlockInfo(new TextureInfo("dirt"));
+		BlockInfo block = new BlockInfo(new TextureInfo("ceramicTile"));
 
-		int max = 16 * (1 * 2 + 1);
-
-		for (int x = -10; x < max; x++) {
-			for (int y = -10; y < max; y++) {
-				for (int z = -10; z < max; z++) {
-					world.setBlock(x, y, z, block);
-				}
+		for (int x = -16; x < 32; x++) {
+			for (int z = -16; z < 32; z++) {
+				world.setBlock(x, 0, z, block);
 			}
 		}
+
+		world.setBlock(6, 3, 6, new BlockInfo(new TextureInfo("Stone"), new Vector3f(0, 0, 1)));
+		world.setBlock(10, 3, 10, new BlockInfo(new TextureInfo("Stone"), new Vector3f(0, 1, 0)));
+		world.setBlock(6, 3, 10, new BlockInfo(new TextureInfo("Stone"), new Vector3f(1, 0, 0)));
+		//world.setBlock(10, 3, 6, new BlockInfo(new TextureInfo("Stone"), new Vector3f(1, 1, 1)));
+
+
+		world.setBlock(10, 2, 10, block);
+
+		world.setBlock(11, 2, 11, block);
+		world.setBlock(11, 2, 9, block);
+		world.setBlock(9, 2, 11, block);
+		world.setBlock(9, 2, 9, block);
+
+		world.setBlock(10, 2, 11, block);
+		world.setBlock(10, 2, 9, block);
+		world.setBlock(11, 2, 10, block);
+		world.setBlock(9, 2, 10, block);
+
 
 		//world.setBlock(0, 0, 0, new BlockInfo(new TextureInfo("dirt")));
 		//world.setBlock(0, 1, 0, new BlockInfo(new TextureInfo("dirt"), "Oto"));
@@ -97,29 +123,7 @@ public class ClientApp extends SimpleApplication {
 		rootNode.attachChild(world.getNode());
 
 
-		/*
-		int size = 16;
 
-		int bigSize = 5;
-
-		for (int cx = -bigSize; cx <= bigSize; cx++) {
-			for (int cy = -bigSize; cy <= bigSize; cy++) {
-				for (int cz = -bigSize; cz <= bigSize; cz++) {
-					Timer timer = new Timer();
-					Node node = WorldGen.genChunk(cx, cy, cz, size).genNode(assetManager);
-					if (node.getChildren().size() > 0) {
-						log.info("{}, {}, {}", cx, cy, cz);
-						GeometryBatchFactory.optimize(node);
-						node.setLocalTranslation(cx * size, cy * size, cz * size);
-						rootNode.attachChild(node);
-					}
-					log.info("Chunk generation took {} sec", timer.getSec(5));
-				}
-			}
-		}
-
-
-		*/
 
 		cam.setLocation(new Vector3f(0, 2, -15));
 		cam.lookAtDirection(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
@@ -127,7 +131,7 @@ public class ClientApp extends SimpleApplication {
 
 		AmbientLight al = new AmbientLight();
 		al.setColor(ColorRGBA.White.mult(5));
-		rootNode.addLight(al);
+		//rootNode.addLight(al);
 
 		ActionUtils.register(inputManager, new LeftClickAction(cam, world));
 
@@ -135,6 +139,41 @@ public class ClientApp extends SimpleApplication {
 
 
 		initCrossHairs();
+
+
+
+
+
+
+		/*
+		cam.setLocation(new Vector3f(5, 5, 5));
+
+		cam.lookAt(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
+
+
+
+
+		BlenderKey key = new BlenderKey("butterfly.blend");
+
+
+
+		Spatial model = assetManager.loadModel(key);
+
+
+		AnimControl control = ((Node) model).getChild("Armature").getControl(AnimControl.class);
+		AnimChannel channel = control.createChannel();
+		System.out.println(control.getAnimationNames());
+		channel.setAnim("flapWings");
+
+
+		model.setMaterial(AssetStore.getMaterial(assetManager, new BlockInfo(new TextureInfo("dirt")), Side.TOP, ColorRGBA.White));
+
+
+		rootNode.attachChild(model);
+		*/
+
+
+
 	}
 
 	private void initCrossHairs() {
