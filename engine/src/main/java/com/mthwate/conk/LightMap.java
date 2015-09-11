@@ -6,9 +6,7 @@ import com.mthwate.datlib.math.set.Set3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mthwate
@@ -60,16 +58,17 @@ public class LightMap {
 
 
 
-		LinkedList<Set3i> poss = new LinkedList<>();
-		LinkedList<Vector3f> vals = new LinkedList<>();
+		LinkedHashMap<Set3i, Vector3f> posval = new LinkedHashMap<>();
 
-		poss.add(new Set3i(ox, oy, oz));
-		vals.add(oVal);
+		posval.put(new Set3i(ox, oy, oz), oVal);
 
-		while (poss.size() > 0) {
+		while (posval.size() > 0) {
 
-			Set3i pos = poss.removeFirst();
-			Vector3f val = vals.removeFirst();
+			Map.Entry<Set3i, Vector3f> next = posval.entrySet().iterator().next();
+
+			Set3i pos = next.getKey();
+			Vector3f val = next.getValue();
+			posval.remove(pos);
 
 			int x = pos.getX();
 			int y = pos.getY();
@@ -112,29 +111,51 @@ public class LightMap {
 									i++;
 								}
 
-								if (i > 0) {
+								if (i == 1) {//TODO change to i > 0
 
-									poss.add(new Set3i(x + ix, y + iy, z + iz));
+									Set3i npos = new Set3i(x + ix, y + iy, z + iz);
 
+									if (posval.containsKey(npos)) {
 
+										Vector3f nval = null;
 
-									Vector3f nval = null;
+										switch (i) {
+											case 1:
+												nval = nVal1;
+												break;
+											case 2:
+												nval = nVal2;
+												break;
+											case 3:
+												nval = nVal3;
+												break;
+											default:
+												System.out.println("Bad");
+										}
 
-									switch (i) {
-										case 1:
-											nval = nVal1;
-											break;
-										case 2:
-											nval = nVal2;
-											break;
-										case 3:
-											nval = nVal3;
-											break;
-										default:
-											System.out.println("Bad");
+										if (posval.get(npos).length() < nval.length()) {
+											posval.put(npos, nval);
+										}
+
+									} else {
+										Vector3f nval = null;
+
+										switch (i) {
+											case 1:
+												nval = nVal1;
+												break;
+											case 2:
+												nval = nVal2;
+												break;
+											case 3:
+												nval = nVal3;
+												break;
+											default:
+												System.out.println("Bad");
+										}
+
+										posval.put(npos, nval);
 									}
-
-									vals.add(nval);
 								}
 							}
 						}
