@@ -30,6 +30,7 @@ public class World extends AbstractAppState {
 
 	private AssetManager assetManager;
 
+	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
 		assetManager = app.getAssetManager();

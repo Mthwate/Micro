@@ -7,6 +7,4 @@ import com.mthwate.conk.message.AbstractMessageListener;
 /**
  * @author mthwate
  */
-public abstract class AbstractServerListener<T extends Message> extends AbstractMessageListener<HostedConnection, T> {
-
-}
+public abstract class AbstractServerListener<T extends Message> extends AbstractMessageListener<HostedConnection, T> {}

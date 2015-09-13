@@ -7,13 +7,13 @@ import com.jme3.network.serializing.Serializable;
  * @author mthwate
  */
 @Serializable
-public class PositionMessage extends AbstractMessage {
+public class PlayerPositionMessage extends AbstractMessage {
 
 	private Vector3f position;
 
-	public PositionMessage() {}
+	public PlayerPositionMessage() {}
 
-	public PositionMessage(Vector3f position) {
+	public PlayerPositionMessage(Vector3f position) {
 		this.position = position;
 	}
 

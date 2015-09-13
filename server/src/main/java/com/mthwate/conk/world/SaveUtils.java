@@ -3,6 +3,7 @@ package com.mthwate.conk.world;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jme3.math.Vector3f;
+import com.jme3.network.HostedConnection;
 import com.mthwate.conk.PropUtils;
 import com.mthwate.conk.block.Block;
 import com.mthwate.conk.block.BlockStore;
@@ -102,7 +103,7 @@ public class SaveUtils {
 		}
 	}
 
-	public static User loadUser(String username) {
+	public static User loadUser(String username, HostedConnection connection) {
 		File file = new File(USER_DIR, username);
 
 		User user = null;
@@ -119,7 +120,7 @@ public class SaveUtils {
 		}
 
 		if (pos != null) {
-			user = new User(username);
+			user = new User(username, connection);
 			user.setPosition(pos);
 		}
 

@@ -43,6 +43,7 @@ public class AssetStore {
 			material = new Material(assetManager, info.getMaterialInfo().getMatDef(side));
 			material.setTexture(info.getMaterialInfo().getTextureType(side), getTexture(assetManager, info, side));
 
+			//TODO speed this up
 			Image img = new Image();
 			img.setFormat(Image.Format.ABGR8);
 			img.setWidth(1);
@@ -50,7 +51,7 @@ public class AssetStore {
 			img.setData(BufferUtils.createByteBuffer((int) Math.ceil(Image.Format.ABGR8.getBitsPerPixel() / 8)));
 			ImageRaster.create(img).setPixel(0, 0, light);
 			Texture2D t = new Texture2D(img);
-			material.setTexture("LightMap", t);
+			//material.setTexture("LightMap", t);//TODO uncomment this
 
 			if (info.getTextureInfo().isTransparent()) {
 				material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);

@@ -1,4 +1,7 @@
+evaluationDependsOn(':common')
+
 dependencies {
+	compile project(':common')
 	compile "com.jme3:jme3-core:$jme_version"
 	compile 'com.mthwate.datlib:datlib:1.2.1'
 	compile 'org.slf4j:slf4j-jdk14:1.7.12'

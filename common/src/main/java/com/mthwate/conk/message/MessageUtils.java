@@ -16,17 +16,9 @@ public class MessageUtils {
 	private static final Logger log = LoggerFactory.getLogger(MessageUtils.class);
 
 	public static void register() {
-		Reflections reflections = new Reflections();
-
-		Set<Class<? extends AbstractMessage>> types = reflections.getSubTypesOf(AbstractMessage.class);
-
-		for (Class<? extends AbstractMessage> type : types) {
-			if (type.isAnnotationPresent(Serializable.class)) {
-				log.info("Registering serializable {}", type);
-				Serializer.registerClass(type);
-			}
-		}
-
+		Serializer.registerClass(BlockUpdateMessage.class);
+		Serializer.registerClass(LoginMessage.class);
+		Serializer.registerClass(PlayerPositionMessage.class);
 	}
 
 }
