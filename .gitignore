@@ -8,3 +8,7 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 /lib*.so
+
+# Game save
+/users
+/world
