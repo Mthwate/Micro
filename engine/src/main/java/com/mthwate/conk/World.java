@@ -6,12 +6,15 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.mthwate.conk.info.BlockInfo;
-import com.mthwate.datlib.Timer;
 import com.mthwate.datlib.math.set.Set3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author mthwate
@@ -141,11 +144,11 @@ public class World extends AbstractAppState {
 	}
 
 	private static int getLocal(int i) {
-		return PositionUtils.getLocal(i, CHUNK_SIZE);
+		return PositionUtils.getLocalFromGlobal(i, CHUNK_SIZE);
 	}
 
 	private static int getChunk(int i) {
-		return PositionUtils.getChunk(i, CHUNK_SIZE);
+		return PositionUtils.getChunkFromGlobal(i, CHUNK_SIZE);
 	}
 
 	public void updateChunk(Set3i pos) {

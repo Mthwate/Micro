@@ -6,7 +6,9 @@ import com.mthwate.datlib.math.set.Set3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author mthwate
@@ -189,45 +191,38 @@ public class LightMap {
 		}
 
 		private void setLight(int x, int y, int z, Vector3f val) {
-			int cx = PositionUtils.getChunk(x, size);
-			int cy = PositionUtils.getChunk(y, size);
-			int cz = PositionUtils.getChunk(z, size);
+			Set3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
 
-			Set3i cPos = new Set3i(cx, cy, cz);
+			LightChunk chunk = getGenChunk(cPos);
 
-			LightChunk chunk = map.get(cPos);
-
-			if (chunk == null) {
-				chunk = new LightChunk(size);
-				map.put(cPos, chunk);
-			}
-
-			int lx = PositionUtils.getLocal(x, size);
-			int ly = PositionUtils.getLocal(y, size);
-			int lz = PositionUtils.getLocal(z, size);
+			int lx = PositionUtils.getLocalFromGlobal(x, size);
+			int ly = PositionUtils.getLocalFromGlobal(y, size);
+			int lz = PositionUtils.getLocalFromGlobal(z, size);
 
 			chunk.setLight(lx, ly, lz, val);
 		}
 
 		private Vector3f getLight(int x, int y, int z) {
-			int cx = PositionUtils.getChunk(x, size);
-			int cy = PositionUtils.getChunk(y, size);
-			int cz = PositionUtils.getChunk(z, size);
+			Set3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
 
-			Set3i cPos = new Set3i(cx, cy, cz);
+			LightChunk chunk = getGenChunk(cPos);
 
-			LightChunk chunk = map.get(cPos);
+			int lx = PositionUtils.getLocalFromGlobal(x, size);
+			int ly = PositionUtils.getLocalFromGlobal(y, size);
+			int lz = PositionUtils.getLocalFromGlobal(z, size);
+
+			return chunk.getLight(lx, ly, lz);
+		}
+
+		public LightChunk getGenChunk(Set3i pos) {
+			LightChunk chunk = map.get(pos);
 
 			if (chunk == null) {
 				chunk = new LightChunk(size);
-				map.put(cPos, chunk);
+				map.put(pos, chunk);
 			}
 
-			int lx = PositionUtils.getLocal(x, size);
-			int ly = PositionUtils.getLocal(y, size);
-			int lz = PositionUtils.getLocal(z, size);
-
-			return chunk.getLight(lx, ly, lz);
+			return chunk;
 		}
 
 		public LightChunk getChunk(Set3i pos) {

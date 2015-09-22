@@ -36,37 +36,35 @@ public class Dimension {
 	public Block getBlock(int x, int y, int z) {
 		int size = Chunk.CHUNK_SIZE;
 
-		int cx = PositionUtils.getChunk(x, Chunk.CHUNK_SIZE);
-		int cy = PositionUtils.getChunk(y, Chunk.CHUNK_SIZE);
-		int cz = PositionUtils.getChunk(z, Chunk.CHUNK_SIZE);
+		int cx = PositionUtils.getChunkFromGlobal(x, size);
+		int cy = PositionUtils.getChunkFromGlobal(y, size);
+		int cz = PositionUtils.getChunkFromGlobal(z, size);
 
-		int lx = PositionUtils.getLocal(x, Chunk.CHUNK_SIZE);
-		int ly = PositionUtils.getLocal(y, Chunk.CHUNK_SIZE);
-		int lz = PositionUtils.getLocal(z, Chunk.CHUNK_SIZE);
+		int lx = PositionUtils.getLocalFromGlobal(x, size);
+		int ly = PositionUtils.getLocalFromGlobal(y, size);
+		int lz = PositionUtils.getLocalFromGlobal(z, size);
 
 		return getChunk(cx, cy, cz).get(lx, ly, lz);
 	}
 
 	private Chunk getChunk(Set3i pos) {
-		return getChunk(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	private Chunk getChunk(int x, int y, int z) {
-		Set3i pos = new Set3i(x, y, z);
 		Chunk chunk = chunks.get(pos);
 		if (chunk == null) {
-			File file = new File(getDimensionDir(), x + "." + y + "." + z + ".json");
+			File file = new File(getDimensionDir(), pos.getX() + "." + pos.getY() + "." + pos.getZ() + ".json");
 			if (file.exists()) {
 				chunk = SaveUtils.loadChunk(file);
 			}
 			if (chunk == null) {
-				chunk = generator.genChunk(x, y, z);
+				chunk = generator.genChunk(pos);
 				SaveUtils.saveChunk(chunk, file);
 			}
 			chunks.put(pos, chunk);
 		}
 		return chunk;
+	}
 
+	private Chunk getChunk(int x, int y, int z) {
+		return getChunk(new Set3i(x, y, z));
 	}
 
 	private File getDimensionDir() {

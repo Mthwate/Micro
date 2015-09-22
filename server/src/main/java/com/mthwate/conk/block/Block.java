@@ -11,4 +11,6 @@ public interface Block {
 
 	Data getData();
 
+	boolean isSolid();
+
 }

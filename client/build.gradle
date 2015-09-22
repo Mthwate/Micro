@@ -1,12 +1,11 @@
-evaluationDependsOn(':common')
+evaluationDependsOn(':shared')
 evaluationDependsOn(':engine')
 
 dependencies {
-	compile project(':common')
+	compile project(':shared')
 	compile project(':engine')
 	compile "com.jme3:jme3-lwjgl:$jme_version"
 	compile "com.jme3:jme3-blender:$jme_version"
-	compile "com.jme3:jme3-effects:$jme_version"
 }
 
 jar {

@@ -1,0 +1,7 @@
+evaluationDependsOn(':common')
+
+dependencies {
+	compile project(':common')
+	compile "com.jme3:jme3-networking:$jme_version"
+	compile "com.jme3:jme3-desktop:$jme_version"
+}

@@ -1,9 +1,4 @@
 dependencies {
-	compile "com.jme3:jme3-core:$jme_version"
-	compile "com.jme3:jme3-desktop:$jme_version"
-	compile "com.jme3:jme3-networking:$jme_version"
-	compile "com.jme3:jme3-jbullet:$jme_version"
 	compile 'com.mthwate.datlib:datlib:1.2.1'
-	compile 'org.slf4j:slf4j-jdk14:1.7.12'
-	compile 'org.reflections:reflections:0.9.10'
+	testCompile 'junit:junit:4.12'
 }

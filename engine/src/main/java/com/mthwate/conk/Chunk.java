@@ -3,7 +3,6 @@ package com.mthwate.conk;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.mthwate.conk.info.BlockInfo;
@@ -118,42 +117,40 @@ public class Chunk {
 		sideConfig[Side.TOP.getI()][2] = 0.5f;
 		sideConfig[Side.TOP.getI()][3] = -FastMath.HALF_PI;
 		sideConfig[Side.TOP.getI()][4] = 0;
-		sideConfig[Side.TOP.getI()][5] = 0;
 
 		sideConfig[Side.BOTTOM.getI()][0] = -0.5f;
 		sideConfig[Side.BOTTOM.getI()][1] = -0.5f;
 		sideConfig[Side.BOTTOM.getI()][2] = -0.5f;
 		sideConfig[Side.BOTTOM.getI()][3] = FastMath.HALF_PI;
 		sideConfig[Side.BOTTOM.getI()][4] = 0;
-		sideConfig[Side.BOTTOM.getI()][5] = 0;
 
 		sideConfig[Side.FRONT.getI()][0] = -0.5f;
 		sideConfig[Side.FRONT.getI()][1] = -0.5f;
 		sideConfig[Side.FRONT.getI()][2] = 0.5f;
 		sideConfig[Side.FRONT.getI()][3] = 0;
 		sideConfig[Side.FRONT.getI()][4] = 0;
-		sideConfig[Side.FRONT.getI()][5] = 0;
 
 		sideConfig[Side.BACK.getI()][0] = 0.5f;
 		sideConfig[Side.BACK.getI()][1] = -0.5f;
 		sideConfig[Side.BACK.getI()][2] = -0.5f;
 		sideConfig[Side.BACK.getI()][3] = 0;
 		sideConfig[Side.BACK.getI()][4] = FastMath.PI;
-		sideConfig[Side.BACK.getI()][5] = 0;
 
 		sideConfig[Side.RIGHT.getI()][0] = 0.5f;
 		sideConfig[Side.RIGHT.getI()][1] = -0.5f;
 		sideConfig[Side.RIGHT.getI()][2] = 0.5f;
 		sideConfig[Side.RIGHT.getI()][3] = 0;
 		sideConfig[Side.RIGHT.getI()][4] = FastMath.HALF_PI;
-		sideConfig[Side.RIGHT.getI()][5] = 0;
 
 		sideConfig[Side.LEFT.getI()][0] = -0.5f;
 		sideConfig[Side.LEFT.getI()][1] = -0.5f;
 		sideConfig[Side.LEFT.getI()][2] = -0.5f;
 		sideConfig[Side.LEFT.getI()][3] = 0;
 		sideConfig[Side.LEFT.getI()][4] = -FastMath.HALF_PI;
-		sideConfig[Side.LEFT.getI()][5] = 0;
+
+		for (int i = 0; i < 6; i++) {
+			sideConfig[i][5] = 0;
+		}
 	}
 
 	private void addBlock(Node node, int x, int y, int z, AssetManager assetManager, BlockWrapper[][][] wrappers) {

@@ -15,6 +15,8 @@ public class Chunk {
 
 	public static final int CHUNK_SIZE = PropUtils.getChunkSize();
 
+	private static final Box BOX_MESH = new Box(PropUtils.getCubeSize() / 2, PropUtils.getCubeSize() / 2, PropUtils.getCubeSize() / 2);
+
 	private Block[][][] blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
 	private boolean changed = true;
@@ -34,9 +36,9 @@ public class Chunk {
 		for (int x = 0; x < CHUNK_SIZE; x++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
 				for (int z = 0; z < CHUNK_SIZE; z++) {
-					if (!blocks[x][y][z].getName().equals("air")) {//TODO change this
+					if (blocks[x][y][z].isSolid()) {
 						Geometry geom = new Geometry();
-						geom.setMesh(new Box(0.5f, 0.5f, 0.5f));
+						geom.setMesh(BOX_MESH);
 						geom.setLocalTranslation(x, y, z);
 						node.attachChild(geom);
 					}

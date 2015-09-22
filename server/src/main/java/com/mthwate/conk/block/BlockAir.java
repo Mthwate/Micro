@@ -12,4 +12,9 @@ public class BlockAir extends BlockBase {
 	public String getName() {
 		return "air";
 	}
+
+	public boolean isSolid() {
+		return false;
+	}
+
 }

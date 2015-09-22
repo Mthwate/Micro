@@ -13,4 +13,8 @@ public class BlockDirt extends BlockBase {
 		return "dirt";
 	}
 
+	public boolean isSolid() {
+		return true;
+	}
+
 }

@@ -1,7 +1,6 @@
 package com.mthwate.conk.action;
 
 import com.jme3.input.InputManager;
-import com.jme3.input.controls.ActionListener;
 
 /**
  * @author mthwate

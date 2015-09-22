@@ -49,9 +49,9 @@ public class PhysicsAppState extends AbstractAppState {
 		for (User user : UserStore.getUsers()) {
 			Vector3f pos = user.getPosition();
 
-			int cx = PositionUtils.getChunk((int) pos.getX(), Chunk.CHUNK_SIZE);
-			int cy = PositionUtils.getChunk((int) pos.getY(), Chunk.CHUNK_SIZE);
-			int cz = PositionUtils.getChunk((int) pos.getZ(), Chunk.CHUNK_SIZE);
+			int cx = PositionUtils.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
+			int cy = PositionUtils.getChunkFromGlobal((int) pos.getY(), Chunk.CHUNK_SIZE);
+			int cz = PositionUtils.getChunkFromGlobal((int) pos.getZ(), Chunk.CHUNK_SIZE);
 
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {

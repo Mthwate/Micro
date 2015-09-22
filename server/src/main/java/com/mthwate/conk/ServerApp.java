@@ -11,6 +11,7 @@ import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.state.PhysicsAppState;
 import com.mthwate.conk.state.PositionAppState;
+import com.mthwate.conk.state.WorldUpdateAppState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +74,7 @@ public class ServerApp extends SimpleApplication {
 
 			stateManager.attach(new PhysicsAppState(bulletAppState, rootNode));
 			stateManager.attach(new PositionAppState());
+			stateManager.attach(new WorldUpdateAppState());
 
 
 

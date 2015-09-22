@@ -12,14 +12,20 @@ import com.mthwate.datlib.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * @author mthwate
  */
 public class SaveUtils {
 
-	private static final Gson gson = new GsonBuilder().create();
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	private static final Logger log = LoggerFactory.getLogger(SaveUtils.class);
 
@@ -44,7 +50,7 @@ public class SaveUtils {
 			for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 				for (int y = 0; y < Chunk.CHUNK_SIZE; y++) {
 					for (int z = 0; z < Chunk.CHUNK_SIZE; z++) {
-						BlockSaveFormat blockSave = save.blocks[x][y][x];
+						BlockSaveFormat blockSave = save.blocks[x][y][z];
 						if (blockSave != null) {
 							Block block = BlockStore.getBlock(blockSave.name);
 							block.setData(block.getData());

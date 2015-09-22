@@ -9,52 +9,46 @@ import java.io.File;
  */
 public class PropUtils {
 
-	private static final File CLIENT = new File("client.properties");
+	private static final File FILE = new File("server.properties");
 
-	private static final File SERVER = new File("server.properties");
-
-	private static String getServerProperty(String key, String defaultValue) {
-		return PropertyUtils.getProperty(SERVER, key, defaultValue);
+	private static String getProperty(String key, String defaultValue) {
+		return PropertyUtils.getProperty(FILE, key, defaultValue);
 	}
 
-	private static int getServerProperty(String key, int defaultValue) {
-		return Integer.parseInt(PropertyUtils.getProperty(SERVER, key, String.valueOf(defaultValue)));
+	private static int getProperty(String key, int defaultValue) {
+		return Integer.parseInt(getProperty(key, String.valueOf(defaultValue)));
 	}
 
-	private static float getServerProperty(String key, float defaultValue) {
-		return Float.parseFloat(PropertyUtils.getProperty(SERVER, key, String.valueOf(defaultValue)));
-	}
-
-	private static String getClientProperty(String key, String defaultValue) {
-		return PropertyUtils.getProperty(CLIENT, key, defaultValue);
+	private static float getProperty(String key, float defaultValue) {
+		return Float.parseFloat(getProperty(key, String.valueOf(defaultValue)));
 	}
 
 	public static String getUserDir() {
-		return getServerProperty("userDir", "users");
+		return getProperty("userDir", "users");
 	}
 
 	public static String getWorldDir() {
-		return getServerProperty("worldDir", "world");
+		return getProperty("worldDir", "world");
 	}
 
 	public static int getChunkSize() {
-		return getServerProperty("chunkSize", 16);
+		return getProperty("chunkSize", 16);
 	}
 
 	public static float getPlayerHeight() {
-		return getServerProperty("playerHeight", 1.75f);
+		return getProperty("playerHeight", 1.75f);
 	}
 
 	public static float getPlayerRadius() {
-		return getServerProperty("playerRadius", 0.23f);
+		return getProperty("playerRadius", 0.23f);
 	}
 
 	public static float getPlayerMass() {
-		return getServerProperty("playerMass", 80f);
+		return getProperty("playerMass", 80f);
 	}
 
 	public static float getCubeSize() {
-		return getServerProperty("cubeSize", 1f);
+		return getProperty("cubeSize", 1f);
 	}
 
 }

@@ -7,7 +7,6 @@ import com.jme3.input.controls.Trigger;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Node;
 import com.mthwate.conk.World;
 import com.mthwate.datlib.math.set.Set3i;
 import org.slf4j.Logger;
