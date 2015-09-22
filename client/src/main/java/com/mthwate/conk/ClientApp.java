@@ -7,6 +7,8 @@ import com.jme3.network.Client;
 import com.jme3.network.Network;
 import com.jme3.network.kernel.KernelException;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
+import com.mthwate.conk.action.ActionUtils;
+import com.mthwate.conk.action.JumpAction;
 import com.mthwate.conk.listener.BlockUpdateListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
@@ -44,6 +46,7 @@ public class ClientApp extends SimpleApplication {
 
 			//ActionUtils.register(inputManager, new LeftClickAction(cam, world));
 			//ActionUtils.register(inputManager, new RightClickAction(cam, world));
+			ActionUtils.register(inputManager, new JumpAction(client));
 
 			WorldStore.init(stateManager, rootNode);
 			WorldStore.setWorld(new World());

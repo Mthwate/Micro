@@ -55,9 +55,11 @@ public class LightMap {
 
 	private void crawl(World world, int ox, int oy, int oz, Vector3f oVal) {
 
-		float fallOff2 = (float) (fallOff * Math.sqrt(2));
-		float fallOff3 = (float) (fallOff * Math.sqrt(3));
+		float[] fallOffs = new float[3];
 
+		for (int i = 0; i < 3; i++) {
+			fallOffs[i] = (float) (fallOff * Math.sqrt(i+1));
+		}
 
 
 		LinkedHashMap<Set3i, Vector3f> posval = new LinkedHashMap<>();
@@ -80,82 +82,42 @@ public class LightMap {
 				cacheMap.setLight(x, y, z, val);
 
 				if (val.length() > 0) {
-					Vector3f nVal1 = val.subtract(fallOff, fallOff, fallOff);
-					Vector3f nVal2 = val.subtract(fallOff2, fallOff2, fallOff2);
-					Vector3f nVal3 = val.subtract(fallOff3, fallOff3, fallOff3);
+					Vector3f[] newVals = new Vector3f[3];
 
 					for (int i = 0; i < 3; i++) {
-						if (nVal1.get(i) < 0) {
-							nVal1.set(i, 0);
-						}
-						if (nVal2.get(i) < 0) {
-							nVal2.set(i, 0);
-						}
-						if (nVal3.get(i) < 0) {
-							nVal3.set(i, 0);
+						newVals[i] = val.subtract(fallOffs[i], fallOffs[i], fallOffs[i]);
+					}
+
+					for (int i = 0; i < 3; i++) {
+						for (int j = 0; j < 3; j++) {
+							if (newVals[i].get(j) < 0) {
+								newVals[i].set(j, 0);
+							}
 						}
 					}
 
 
-					for (int ix = -1; ix <= 1; ix++) {
-						for (int iy = -1; iy <= 1; iy++) {
-							for (int iz = -1; iz <= 1; iz++) {
+					int[] iCoords = new int[3];//ix, iy, and iz
 
-								int i = 0;
+					for (iCoords[0] = -1; iCoords[0] <= 1; iCoords[0]++) {
+						for (iCoords[1] = -1; iCoords[1] <= 1; iCoords[1]++) {
+							for (iCoords[2] = -1; iCoords[2] <= 1; iCoords[2]++) {
 
-								if (ix != 0) {
-									i++;
-								}
-								if (iy != 0) {
-									i++;
-								}
-								if (iz != 0) {
-									i++;
+								int nonZero = 0;
+
+								for (int i = 0; i < 3; i++) {
+									if (iCoords[i] != 0) {
+										nonZero++;
+									}
 								}
 
-								if (i == 1) {//TODO change to i > 0
+								if (nonZero == 1) {//TODO change to i > 0
 
-									Set3i npos = new Set3i(x + ix, y + iy, z + iz);
+									Set3i npos = new Set3i(x + iCoords[0], y + iCoords[1], z + iCoords[2]);
 
-									if (posval.containsKey(npos)) {
+									Vector3f nval = newVals[nonZero - 1];
 
-										Vector3f nval = null;
-
-										switch (i) {
-											case 1:
-												nval = nVal1;
-												break;
-											case 2:
-												nval = nVal2;
-												break;
-											case 3:
-												nval = nVal3;
-												break;
-											default:
-												System.out.println("Bad");
-										}
-
-										if (posval.get(npos).length() < nval.length()) {
-											posval.put(npos, nval);
-										}
-
-									} else {
-										Vector3f nval = null;
-
-										switch (i) {
-											case 1:
-												nval = nVal1;
-												break;
-											case 2:
-												nval = nVal2;
-												break;
-											case 3:
-												nval = nVal3;
-												break;
-											default:
-												System.out.println("Bad");
-										}
-
+									if (!posval.containsKey(npos) || posval.get(npos).length() < nval.length()) {
 										posval.put(npos, nval);
 									}
 								}
@@ -168,17 +130,13 @@ public class LightMap {
 
 
 
-			//} else if (val.length() == 0) {
-				//cacheMap.setLight(x, y, z, val);
-			//} else if (cacheMap.getLight(x, y, z).length() < 0) {
-				//System.out.println("Something went wrong");
 			}
 		}
 	}
 
 	public void delete(World world) {
 		for (Set3i pos :cacheMap.getMap().keySet()) {
-			world.updateChunk(pos);
+			world.updateMarkChunk(pos);
 		}
 	}
 
@@ -228,29 +186,6 @@ public class LightMap {
 		public LightChunk getChunk(Set3i pos) {
 			return map.get(pos);
 		}
-	}
-
-	public class LightChunk {
-
-		private final Vector3f[][][] chunk;
-
-		private LightChunk(int size) {
-			this.chunk = new Vector3f[size][size][size];
-		}
-
-		private void setLight(int x, int y, int z, Vector3f val) {
-			chunk[x][y][z] = val;
-		}
-
-		public Vector3f getLight(int x, int y, int z) {
-			Vector3f tmpLight = chunk[x][y][z];
-			if (tmpLight == null) {
-				tmpLight = new Vector3f();
-				chunk[x][y][z] = tmpLight;
-			}
-			return tmpLight;
-		}
-
 	}
 
 }

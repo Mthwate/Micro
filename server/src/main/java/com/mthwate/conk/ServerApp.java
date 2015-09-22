@@ -5,8 +5,10 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.kernel.KernelException;
+import com.mthwate.conk.listener.JumpListener;
 import com.mthwate.conk.listener.LoginListener;
 import com.mthwate.conk.listener.LogoutListener;
+import com.mthwate.conk.message.JumpMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.state.PhysicsAppState;
@@ -61,6 +63,7 @@ public class ServerApp extends SimpleApplication {
 
 			server.addConnectionListener(new LogoutListener(bulletAppState));
 			server.addMessageListener(new LoginListener(rootNode, bulletAppState), LoginMessage.class);
+			server.addMessageListener(new JumpListener(), JumpMessage.class);
 
 			consoleThread = new ConsoleThread(this);
 			consoleThread.start();

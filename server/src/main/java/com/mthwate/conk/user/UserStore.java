@@ -1,13 +1,13 @@
 package com.mthwate.conk.user;
 
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.network.HostedConnection;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
-import com.mthwate.conk.PropUtils;
 import com.mthwate.conk.world.SaveUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,8 @@ import java.util.Map;
  * @author mthwate
  */
 public class UserStore {
+
+	private static final Logger log = LoggerFactory.getLogger(UserStore.class);
 
 	private static Map<String, User> users = new HashMap<>();
 
@@ -39,6 +41,7 @@ public class UserStore {
 			User user = SaveUtils.loadUser(username, connection);
 
 			if (user == null) {
+				log.info("Creating new user for {}", username);
 				user = new User(username, connection);
 				user.setPosition(new Vector3f(0f, 0f, 0f));
 			}
@@ -47,10 +50,7 @@ public class UserStore {
 
 			physicsNode.attachChild(user.getSpatial());
 
-			BetterCharacterControl control = new BetterCharacterControl(PropUtils.getPlayerRadius(), PropUtils.getPlayerHeight(), PropUtils.getPlayerMass());
-
-			user.getSpatial().addControl(control);
-			bulletAppState.getPhysicsSpace().add(control);
+			bulletAppState.getPhysicsSpace().add(user.getControl());
 		}
 	}
 

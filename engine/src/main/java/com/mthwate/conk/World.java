@@ -23,7 +23,7 @@ public class World extends AbstractAppState {
 
 	private static final Logger log = LoggerFactory.getLogger(World.class);
 
-	private static final int CHUNK_SIZE = 16;
+	private static final int CHUNK_SIZE = 16;//TODO remove this
 
 	private final Map<Set3i, Chunk> chunks = Collections.synchronizedMap(new HashMap<Set3i, Chunk>());
 
@@ -51,7 +51,7 @@ public class World extends AbstractAppState {
 		synchronized (chunks) {
 			for (Map.Entry<Set3i, Chunk> entry : chunks.entrySet()) {
 				Chunk chunk = entry.getValue();
-				if (chunk.hasChanged()) {
+				if (chunk.hasUpdated(System.nanoTime() - (long) (tpf * 1000000000))) {
 					updates.add(entry.getKey());
 
 					tryAdd(updates, entry.getKey().addNew(-1, 0, 0));
@@ -75,7 +75,7 @@ public class World extends AbstractAppState {
 
 		for (Set3i pos : updates) {
 
-			List<LightMap.LightChunk> light = new ArrayList<>();
+			List<LightChunk> light = new ArrayList<>();
 
 			for (LightMap map : lightMaps.values()) {
 				if (map.contains(this, pos)) {
@@ -83,7 +83,7 @@ public class World extends AbstractAppState {
 				}
 			}
 
-			Node chunkNode = chunks.get(pos).genNode(assetManager, this, pos.clone(), light);
+			Node chunkNode = ChunkUtils.genNode(chunks.get(pos), assetManager, this, pos.clone(), light);
 			node.detachChildNamed(pos.toString());
 			if (chunkNode.getChildren().size() > 0) {
 				node.attachChild(chunkNode);
@@ -126,6 +126,10 @@ public class World extends AbstractAppState {
 		}
 	}
 
+	public BlockInfo getBlock(Set3i pos) {
+		return getBlock(pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	public BlockInfo getBlock(int x, int y, int z) {
 		Set3i pos = new Set3i(getChunk(x), getChunk(y), getChunk(z));
 
@@ -151,7 +155,7 @@ public class World extends AbstractAppState {
 		return PositionUtils.getChunkFromGlobal(i, CHUNK_SIZE);
 	}
 
-	public void updateChunk(Set3i pos) {
-		chunks.get(pos).markChanged();
+	public void updateMarkChunk(Set3i pos) {
+		chunks.get(pos).markUpdated();
 	}
 }

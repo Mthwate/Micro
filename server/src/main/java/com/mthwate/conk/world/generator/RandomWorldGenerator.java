@@ -27,7 +27,7 @@ public class RandomWorldGenerator extends WorldGenerator {
 		return chunk;
 	}
 
-	private Block randBlock() {
+	private static Block randBlock() {
 		Random rand = new Random();//TODO replace this
 		Block block = BlockStore.getBlock("air");
 		if (rand.nextInt(5) == 0) {

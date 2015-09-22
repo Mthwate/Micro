@@ -22,7 +22,7 @@ public class WorldUpdateAppState extends AbstractAppState {
 
 	private final Dimension dim = new Dimension("world", new RandomWorldGenerator());//TODO remove this
 
-	private final int RADIUS = 1;//TODO remove this
+	private static final int RADIUS = 1;//TODO remove this
 
 	private final Map<String, Set3i> cache = new HashMap<>();
 
