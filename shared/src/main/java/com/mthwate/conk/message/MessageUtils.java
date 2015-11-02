@@ -12,6 +12,7 @@ public class MessageUtils {
 		Serializer.registerClass(LoginMessage.class);
 		Serializer.registerClass(PlayerPositionMessage.class);
 		Serializer.registerClass(JumpMessage.class);
+		Serializer.registerClass(MoveMessage.class);
 	}
 
 }

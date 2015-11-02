@@ -6,7 +6,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.mthwate.conk.info.BlockInfo;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +25,9 @@ public class World extends AbstractAppState {
 
 	private static final int CHUNK_SIZE = 16;//TODO remove this
 
-	private final Map<Set3i, Chunk> chunks = Collections.synchronizedMap(new HashMap<Set3i, Chunk>());
+	private final Map<Vector3i, Chunk> chunks = Collections.synchronizedMap(new HashMap<Vector3i, Chunk>());
 
-	private final Map<Set3i, LightMap> lightMaps = Collections.synchronizedMap(new HashMap<Set3i, LightMap>());
+	private final Map<Vector3i, LightMap> lightMaps = Collections.synchronizedMap(new HashMap<Vector3i, LightMap>());
 
 	private final Node node = new Node();
 
@@ -46,44 +46,44 @@ public class World extends AbstractAppState {
 	@Override
 	public void update(float tpf) {
 
-		List<Set3i> updates = new ArrayList<>();
+		List<Vector3i> updates = new ArrayList<>();
 
 		synchronized (chunks) {
-			for (Map.Entry<Set3i, Chunk> entry : chunks.entrySet()) {
+			for (Map.Entry<Vector3i, Chunk> entry : chunks.entrySet()) {
 				Chunk chunk = entry.getValue();
 				if (chunk.hasUpdated(System.nanoTime() - (long) (tpf * 1000000000))) {
 					updates.add(entry.getKey());
 
-					tryAdd(updates, entry.getKey().addNew(-1, 0, 0));
-					tryAdd(updates, entry.getKey().addNew(1, 0, 0));
-					tryAdd(updates, entry.getKey().addNew(0, -1, 0));
-					tryAdd(updates, entry.getKey().addNew(0, 1, 0));
-					tryAdd(updates, entry.getKey().addNew(0, 0, -1));
-					tryAdd(updates, entry.getKey().addNew(0, 0, 1));
+					tryAdd(updates, entry.getKey().add(-1, 0, 0));
+					tryAdd(updates, entry.getKey().add(1, 0, 0));
+					tryAdd(updates, entry.getKey().add(0, -1, 0));
+					tryAdd(updates, entry.getKey().add(0, 1, 0));
+					tryAdd(updates, entry.getKey().add(0, 0, -1));
+					tryAdd(updates, entry.getKey().add(0, 0, 1));
 				}
 			}
 		}
 
 		for (LightMap map : lightMaps.values()) {
-			for (Set3i pos : updates) {
-				if (!map.isInit() || map.contains(this, pos)) {
+			for (Vector3i pos : updates) {
+				if (!map.isInit() || map.contains(pos)) {
 					map.generate(this);
 					break;
 				}
 			}
 		}
 
-		for (Set3i pos : updates) {
+		for (Vector3i pos : updates) {
 
 			List<LightChunk> light = new ArrayList<>();
 
 			for (LightMap map : lightMaps.values()) {
-				if (map.contains(this, pos)) {
-					light.add(map.getChunk(this, pos));
+				if (map.contains(pos)) {
+					light.add(map.getChunk(pos));
 				}
 			}
 
-			Node chunkNode = ChunkUtils.genNode(chunks.get(pos), assetManager, this, pos.clone(), light);
+			Node chunkNode = ChunkUtils.genNode(chunks.get(pos), assetManager, this, pos, light);
 			node.detachChildNamed(pos.toString());
 			if (chunkNode.getChildren().size() > 0) {
 				node.attachChild(chunkNode);
@@ -91,14 +91,14 @@ public class World extends AbstractAppState {
 		}
 	}
 
-	private void tryAdd(List<Set3i> updates, Set3i pos) {
+	private void tryAdd(List<Vector3i> updates, Vector3i pos) {
 		if (chunks.containsKey(pos)) {
 			updates.add(pos);
 		}
 	}
 
 	public void setBlock(int x, int y, int z, BlockInfo block) {
-		Set3i cPos = new Set3i(getChunk(x), getChunk(y), getChunk(z));
+		Vector3i cPos = new Vector3i(getChunk(x), getChunk(y), getChunk(z));
 
 		synchronized (chunks) {
 			Chunk chunk = chunks.get(cPos);
@@ -110,7 +110,7 @@ public class World extends AbstractAppState {
 		}
 
 		synchronized (lightMaps) {
-			Set3i gPos = new Set3i(x, y, z);
+			Vector3i gPos = new Vector3i(x, y, z);
 
 			LightMap tmpMap = lightMaps.get(gPos);
 
@@ -126,12 +126,12 @@ public class World extends AbstractAppState {
 		}
 	}
 
-	public BlockInfo getBlock(Set3i pos) {
+	public BlockInfo getBlock(Vector3i pos) {
 		return getBlock(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public BlockInfo getBlock(int x, int y, int z) {
-		Set3i pos = new Set3i(getChunk(x), getChunk(y), getChunk(z));
+		Vector3i pos = new Vector3i(getChunk(x), getChunk(y), getChunk(z));
 
 		BlockInfo block;
 
@@ -155,7 +155,7 @@ public class World extends AbstractAppState {
 		return PositionUtils.getChunkFromGlobal(i, CHUNK_SIZE);
 	}
 
-	public void updateMarkChunk(Set3i pos) {
+	public void updateMarkChunk(Vector3i pos) {
 		chunks.get(pos).markUpdated();
 	}
 }

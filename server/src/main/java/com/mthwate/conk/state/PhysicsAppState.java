@@ -12,7 +12,7 @@ import com.mthwate.conk.user.UserStore;
 import com.mthwate.conk.world.Chunk;
 import com.mthwate.conk.world.Dimension;
 import com.mthwate.conk.world.generator.RandomWorldGenerator;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class PhysicsAppState extends AbstractAppState {
 
 	private final Node rootNode;
 
-	private final Map<Set3i, Node> chunks = new HashMap<>();
+	private final Map<Vector3i, Node> chunks = new HashMap<>();
 
 	private final Dimension dim = new Dimension("world", new RandomWorldGenerator());//TODO remove this
 
@@ -44,7 +44,7 @@ public class PhysicsAppState extends AbstractAppState {
 	@Override
 	public void update(float tpf) {
 
-		List<Set3i> chunkPos = new ArrayList<>();
+		List<Vector3i> chunkPos = new ArrayList<>();
 
 		for (User user : UserStore.getUsers()) {
 			Vector3f pos = user.getPosition();
@@ -56,13 +56,13 @@ public class PhysicsAppState extends AbstractAppState {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					for (int z = -1; z <= 1; z++) {
-						chunkPos.add(new Set3i(cx + x, cy + y, cz + z));
+						chunkPos.add(new Vector3i(cx + x, cy + y, cz + z));
 					}
 				}
 			}
 		}
 
-		for (Set3i pos : chunkPos) {
+		for (Vector3i pos : chunkPos) {
 
 			if (dim.hasChanged(pos)) {
 				dim.setChanged(pos, false);
@@ -76,12 +76,10 @@ public class PhysicsAppState extends AbstractAppState {
 					}
 				}
 
-
 				chunks.remove(pos);
 
 				RigidBodyControl nodeControl = new RigidBodyControl(0.0f);
 				Node chunkNode = dim.genNode(pos);
-
 				chunkNode.addControl(nodeControl);
 				bulletAppState.getPhysicsSpace().add(nodeControl);
 				rootNode.attachChild(chunkNode);

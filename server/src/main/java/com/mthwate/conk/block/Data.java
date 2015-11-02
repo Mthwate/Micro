@@ -17,7 +17,7 @@ public class Data {
 	public String getString(String key) {
 		String str = null;
 		Object obj = data.get(key);
-		if (obj != null && obj instanceof String) {
+		if (obj instanceof String) {
 			str = (String) obj;
 		}
 		return str;
@@ -26,7 +26,7 @@ public class Data {
 	public Integer getInt(String key) {
 		Integer num = null;
 		Object obj = data.get(key);
-		if (obj != null && obj instanceof Integer) {
+		if (obj instanceof Integer) {
 			num = (Integer) obj;
 		}
 		return num;

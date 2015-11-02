@@ -9,12 +9,17 @@ import com.jme3.network.kernel.KernelException;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.JumpAction;
+import com.mthwate.conk.action.MoveBackwardAction;
+import com.mthwate.conk.action.MoveForwardAction;
+import com.mthwate.conk.action.MoveLeftAction;
+import com.mthwate.conk.action.MoveRightAction;
 import com.mthwate.conk.listener.BlockUpdateListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.PlayerPositionMessage;
+import com.mthwate.conk.state.MovementAppState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +52,13 @@ public class ClientApp extends SimpleApplication {
 			//ActionUtils.register(inputManager, new LeftClickAction(cam, world));
 			//ActionUtils.register(inputManager, new RightClickAction(cam, world));
 			ActionUtils.register(inputManager, new JumpAction(client));
+			ActionUtils.register(inputManager, new MoveForwardAction());
+			ActionUtils.register(inputManager, new MoveBackwardAction());
+			ActionUtils.register(inputManager, new MoveRightAction());
+			ActionUtils.register(inputManager, new MoveLeftAction());
+
+
+			stateManager.attach(new MovementAppState(client));
 
 			WorldStore.init(stateManager, rootNode);
 			WorldStore.setWorld(new World());

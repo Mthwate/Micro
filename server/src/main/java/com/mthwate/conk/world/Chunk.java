@@ -5,7 +5,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.mthwate.conk.PropUtils;
 import com.mthwate.conk.block.Block;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import jme3tools.optimize.GeometryBatchFactory;
 
 /**
@@ -30,7 +30,7 @@ public class Chunk {
 		blocks[x][y][z] = block;
 	}
 
-	public Node genNode(Set3i pos) {
+	public Node genNode(Vector3i pos) {
 		Node node = new Node();
 
 		for (int x = 0; x < CHUNK_SIZE; x++) {
@@ -48,9 +48,7 @@ public class Chunk {
 
 		GeometryBatchFactory.optimize(node);
 
-		pos.multLocal(CHUNK_SIZE);
-
-		node.setLocalTranslation(pos.getX(), pos.getY(), pos.getZ());
+		node.setLocalTranslation(pos.getX() * CHUNK_SIZE, pos.getY() * CHUNK_SIZE, pos.getZ() * CHUNK_SIZE);
 
 		return node;
 	}

@@ -6,7 +6,7 @@ import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.mthwate.conk.info.BlockInfo;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import jme3tools.optimize.GeometryBatchFactory;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class ChunkUtils {
 		}
 	}
 
-	public static Node genNode(Chunk chunk, AssetManager assetManager, World world, Set3i pos, List<LightChunk> light) {
+	public static Node genNode(Chunk chunk, AssetManager assetManager, World world, Vector3i pos, List<LightChunk> light) {
 
 		int size = chunk.getSize();
 
@@ -71,7 +71,7 @@ public class ChunkUtils {
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				for (int z = 0; z < size; z++) {
-					wrappers[x][y][z] = new BlockWrapper(world.getBlock(pos.multNew(size).addNew(x, y, z)));
+					wrappers[x][y][z] = new BlockWrapper(world.getBlock(pos.multiply(size).add(x, y, z)));
 					for (LightChunk lightMap : light) {
 						wrappers[x][y][z].addLight(lightMap.getLight(x, y, z));
 					}
@@ -100,20 +100,18 @@ public class ChunkUtils {
 
 		node.setName(pos.toString());
 
-		pos.multLocal(size);
-
-		node.setLocalTranslation(pos.getX(), pos.getY(), pos.getZ());
+		node.setLocalTranslation(pos.getX() * size, pos.getY() * size, pos.getZ() * size);
 
 		return node;
 	}
 
-	private static void tryDel(BlockWrapper block, int xf, int yf, int zf, Side side, World world, Set3i pos, BlockWrapper[][][] wrappers, int size) {
+	private static void tryDel(BlockWrapper block, int xf, int yf, int zf, Side side, World world, Vector3i pos, BlockWrapper[][][] wrappers, int size) {
 		BlockInfo adj;
 
 		if (xf >= 0 && xf < size && yf >= 0 && yf < size && zf >= 0 && zf < size) {
 			adj = wrappers[xf][yf][zf].getInfo();
 		} else {
-			Set3i adjustedPos = pos.multNew(size);
+			Vector3i adjustedPos = pos.multiply(size);
 
 			int cx = adjustedPos.getX();
 			int cy = adjustedPos.getY();

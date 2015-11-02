@@ -8,9 +8,11 @@ import com.jme3.network.kernel.KernelException;
 import com.mthwate.conk.listener.JumpListener;
 import com.mthwate.conk.listener.LoginListener;
 import com.mthwate.conk.listener.LogoutListener;
+import com.mthwate.conk.listener.MoveListener;
 import com.mthwate.conk.message.JumpMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
+import com.mthwate.conk.message.MoveMessage;
 import com.mthwate.conk.state.PhysicsAppState;
 import com.mthwate.conk.state.PositionAppState;
 import com.mthwate.conk.state.WorldUpdateAppState;
@@ -64,6 +66,7 @@ public class ServerApp extends SimpleApplication {
 			server.addConnectionListener(new LogoutListener(bulletAppState));
 			server.addMessageListener(new LoginListener(rootNode, bulletAppState), LoginMessage.class);
 			server.addMessageListener(new JumpListener(), JumpMessage.class);
+			server.addMessageListener(new MoveListener(), MoveMessage.class);
 
 			consoleThread = new ConsoleThread(this);
 			consoleThread.start();

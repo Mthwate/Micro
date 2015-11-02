@@ -1,7 +1,7 @@
 package com.mthwate.conk.message;
 
 import com.jme3.network.serializing.Serializable;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 
 /**
  * @author mthwate
@@ -17,15 +17,15 @@ public class BlockUpdateMessage extends AbstractMessage {
 
 	public BlockUpdateMessage() {}
 
-	public BlockUpdateMessage(Set3i pos, String texture) {
+	public BlockUpdateMessage(Vector3i pos, String texture) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
 		this.texture = texture;
 	}
 
-	public Set3i getPosition() {
-		return new Set3i(x, y, z);
+	public Vector3i getPosition() {
+		return new Vector3i(x, y, z);
 	}
 
 	public String getTexture() {

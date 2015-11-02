@@ -24,6 +24,7 @@ public class JumpAction extends ActionHandler {
 
 	@Override
 	public void onPress(float tpf) {
+
 		client.send(new JumpMessage());
 	}
 

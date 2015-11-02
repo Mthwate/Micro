@@ -1,6 +1,6 @@
 package com.mthwate.conk;
 
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 
 /**
  * @author mthwate
@@ -23,14 +23,14 @@ public class PositionUtils {
 		return n;
 	}
 
-	public static Set3i getLocalFromGlobal(int x, int y, int z, int chunkSize) {
+	public static Vector3i getLocalFromGlobal(int x, int y, int z, int chunkSize) {
 		int lx = getLocalFromGlobal(x, chunkSize);
 		int ly = getLocalFromGlobal(y, chunkSize);
 		int lz = getLocalFromGlobal(z, chunkSize);
-		return new Set3i(lx, ly, lz);
+		return new Vector3i(lx, ly, lz);
 	}
 
-	public static Set3i getLocalFromGlobal(Set3i global, int chunkSize) {
+	public static Vector3i getLocalFromGlobal(Vector3i global, int chunkSize) {
 		return getLocalFromGlobal(global.getX(), global.getY(), global.getZ(), chunkSize);
 	}
 
@@ -44,14 +44,14 @@ public class PositionUtils {
 		return global;
 	}
 
-	public static Set3i getChunkFromGlobal(int x, int y, int z, int chunkSize) {
+	public static Vector3i getChunkFromGlobal(int x, int y, int z, int chunkSize) {
 		int cx = getChunkFromGlobal(x, chunkSize);
 		int cy = getChunkFromGlobal(y, chunkSize);
 		int cz = getChunkFromGlobal(z, chunkSize);
-		return new Set3i(cx, cy, cz);
+		return new Vector3i(cx, cy, cz);
 	}
 
-	public static Set3i getChunkFromGlobal(Set3i global, int chunkSize) {
+	public static Vector3i getChunkFromGlobal(Vector3i global, int chunkSize) {
 		return getChunkFromGlobal(global.getX(), global.getY(), global.getZ(), chunkSize);
 	}
 }

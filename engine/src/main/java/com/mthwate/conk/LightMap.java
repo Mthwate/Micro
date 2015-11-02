@@ -2,7 +2,7 @@ package com.mthwate.conk;
 
 import com.jme3.math.Vector3f;
 import com.mthwate.datlib.Timer;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ public class LightMap {
 
 	private static final Logger log = LoggerFactory.getLogger(LightMap.class);
 
-	private final Set3i pos;
+	private final Vector3i pos;
 
 	private final Vector3f light;
 
@@ -25,7 +25,7 @@ public class LightMap {
 
 	private final int size;
 
-	public LightMap(Set3i pos, Vector3f light, float fallOff, int size) {
+	public LightMap(Vector3i pos, Vector3f light, float fallOff, int size) {
 		this.pos = pos;
 		this.light = light;
 		this.fallOff = fallOff;
@@ -38,11 +38,11 @@ public class LightMap {
 		return cacheMap != null;
 	}
 
-	public boolean contains(World world, Set3i pos) {
+	public boolean contains(Vector3i pos) {
 		return cacheMap.getChunk(pos) != null;
 	}
 
-	public LightChunk getChunk(World world, Set3i pos) {
+	public LightChunk getChunk(Vector3i pos) {
 		return cacheMap.getChunk(pos);
 	}
 
@@ -62,15 +62,15 @@ public class LightMap {
 		}
 
 
-		LinkedHashMap<Set3i, Vector3f> posval = new LinkedHashMap<>();
+		LinkedHashMap<Vector3i, Vector3f> posval = new LinkedHashMap<>();
 
-		posval.put(new Set3i(ox, oy, oz), oVal);
+		posval.put(new Vector3i(ox, oy, oz), oVal);
 
 		while (posval.size() > 0) {
 
-			Map.Entry<Set3i, Vector3f> next = posval.entrySet().iterator().next();
+			Map.Entry<Vector3i, Vector3f> next = posval.entrySet().iterator().next();
 
-			Set3i pos = next.getKey();
+			Vector3i pos = next.getKey();
 			Vector3f val = next.getValue();
 			posval.remove(pos);
 
@@ -113,7 +113,7 @@ public class LightMap {
 
 								if (nonZero == 1) {//TODO change to i > 0
 
-									Set3i npos = new Set3i(x + iCoords[0], y + iCoords[1], z + iCoords[2]);
+									Vector3i npos = new Vector3i(x + iCoords[0], y + iCoords[1], z + iCoords[2]);
 
 									Vector3f nval = newVals[nonZero - 1];
 
@@ -135,21 +135,21 @@ public class LightMap {
 	}
 
 	public void delete(World world) {
-		for (Set3i pos :cacheMap.getMap().keySet()) {
+		for (Vector3i pos :cacheMap.getMap().keySet()) {
 			world.updateMarkChunk(pos);
 		}
 	}
 
 	private class TmpMap {
 
-		private final Map<Set3i, LightChunk> map = new HashMap<>();
+		private final Map<Vector3i, LightChunk> map = new HashMap<>();
 
-		private Map<Set3i, LightChunk> getMap() {
+		private Map<Vector3i, LightChunk> getMap() {
 			return map;
 		}
 
 		private void setLight(int x, int y, int z, Vector3f val) {
-			Set3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
+			Vector3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
 
 			LightChunk chunk = getGenChunk(cPos);
 
@@ -161,7 +161,7 @@ public class LightMap {
 		}
 
 		private Vector3f getLight(int x, int y, int z) {
-			Set3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
+			Vector3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
 
 			LightChunk chunk = getGenChunk(cPos);
 
@@ -172,7 +172,7 @@ public class LightMap {
 			return chunk.getLight(lx, ly, lz);
 		}
 
-		public LightChunk getGenChunk(Set3i pos) {
+		public LightChunk getGenChunk(Vector3i pos) {
 			LightChunk chunk = map.get(pos);
 
 			if (chunk == null) {
@@ -183,7 +183,7 @@ public class LightMap {
 			return chunk;
 		}
 
-		public LightChunk getChunk(Set3i pos) {
+		public LightChunk getChunk(Vector3i pos) {
 			return map.get(pos);
 		}
 	}

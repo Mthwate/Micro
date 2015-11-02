@@ -10,7 +10,7 @@ import com.jme3.renderer.Camera;
 import com.mthwate.conk.World;
 import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.conk.info.TextureInfo;
-import com.mthwate.datlib.math.set.Set3i;
+import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +42,13 @@ public class RightClickAction extends ActionHandler {
 		world.getNode().collideWith(ray, results);
 		if (results.size() > 0) {
 			Vector3f pos = results.getClosestCollision().getContactPoint();
-			Set3i coords = new Set3i(0, 0, 0);
+			Vector3i coords = new Vector3i(0, 0, 0);
 			for (int i = 0; i < 3; i++) {
 				int coord = pick(pos.get(i), cam.getLocation().get(i));
 				switch (i) {
-					case 0: coords.addLocal(coord, 0, 0); break;
-					case 1: coords.addLocal(0, coord, 0); break;
-					case 2: coords.addLocal(0, 0, coord); break;
+					case 0: coords = coords.add(coord, 0, 0); break;
+					case 1: coords = coords.add(0, coord, 0); break;
+					case 2: coords = coords.add(0, 0, coord); break;
 				}
 			}
 			world.setBlock(coords.getX(), coords.getY(), coords.getZ(), new BlockInfo(new TextureInfo("ceramicTile")));
