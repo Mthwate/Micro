@@ -5,13 +5,10 @@ import com.mthwate.conk.block.BlockStore;
 import com.mthwate.conk.world.Chunk;
 import com.mthwate.datlib.math.vector.Vector3i;
 
-import java.util.List;
-import java.util.Random;
-
 /**
  * @author mthwate
  */
-public class RandomWorldGenerator implements WorldGenerator {
+public class FlatWorldGenerator implements WorldGenerator {
 
 	@Override
 	public Chunk genChunk(Vector3i chunkPos) {
@@ -20,22 +17,18 @@ public class RandomWorldGenerator implements WorldGenerator {
 		for (int ix = 0; ix < Chunk.CHUNK_SIZE; ix++) {
 			for (int iy = 0; iy < Chunk.CHUNK_SIZE; iy++) {
 				for (int iz = 0; iz < Chunk.CHUNK_SIZE; iz++) {
-					chunk.set(randBlock(), ix, iy, iz);
+					Block block;
+					if (chunkPos.getY() < 0) {
+						block = BlockStore.getBlock("dirt");
+					} else {
+						block = BlockStore.getBlock("air");
+					}
+					chunk.set(block, ix, iy, iz);
 				}
 			}
 		}
 
 		return chunk;
-	}
-
-	private static Block randBlock() {
-		Random rand = new Random();//TODO replace this
-		Block block = BlockStore.getBlock("air");
-		if (rand.nextInt(5) == 0) {
-			List<Block> blocks = BlockStore.getAllBlocks();
-			block = blocks.get(rand.nextInt(blocks.size()));
-		}
-		return block;
 	}
 
 }

@@ -35,7 +35,7 @@ public class User {
 	}
 
 	public void setPosition(Vector3f position) {
-		node.setLocalTranslation(position);
+		control.warp(position);
 	}
 
 	public Vector3f getPosition() {

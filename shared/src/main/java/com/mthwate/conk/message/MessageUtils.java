@@ -9,6 +9,7 @@ public class MessageUtils {
 
 	public static void register() {
 		Serializer.registerClass(BlockUpdateMessage.class);
+		Serializer.registerClass(GroupUpdateMessage.class);
 		Serializer.registerClass(LoginMessage.class);
 		Serializer.registerClass(PlayerPositionMessage.class);
 		Serializer.registerClass(JumpMessage.class);

@@ -14,8 +14,10 @@ import com.mthwate.conk.action.MoveForwardAction;
 import com.mthwate.conk.action.MoveLeftAction;
 import com.mthwate.conk.action.MoveRightAction;
 import com.mthwate.conk.listener.BlockUpdateListener;
+import com.mthwate.conk.listener.GroupUpdateListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
+import com.mthwate.conk.message.GroupUpdateMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.PlayerPositionMessage;
@@ -47,7 +49,7 @@ public class ClientApp extends SimpleApplication {
 			assetManager.registerLoader(BlenderModelLoader.class, "blend");
 
 
-
+			cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), 0.001f, 1000f);
 
 			//ActionUtils.register(inputManager, new LeftClickAction(cam, world));
 			//ActionUtils.register(inputManager, new RightClickAction(cam, world));
@@ -65,7 +67,8 @@ public class ClientApp extends SimpleApplication {
 
 
 			client.addMessageListener(new BlockUpdateListener(), BlockUpdateMessage.class);
-			client.addMessageListener(new PlayerPositionListener(cam), PlayerPositionMessage.class);
+			client.addMessageListener(new GroupUpdateListener(), GroupUpdateMessage.class);
+			client.addMessageListener(new PlayerPositionListener(cam, guiNode, guiFont), PlayerPositionMessage.class);
 
 
 			initCrossHairs();

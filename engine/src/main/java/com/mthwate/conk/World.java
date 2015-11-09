@@ -3,7 +3,6 @@ package com.mthwate.conk;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.datlib.math.vector.Vector3i;
@@ -31,12 +30,15 @@ public class World extends AbstractAppState {
 
 	private final Node node = new Node();
 
-	private AssetManager assetManager;
+	private NodeGenThread nodeGenThread;
+
+	private long lastTime = 0;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-		assetManager = app.getAssetManager();
+		nodeGenThread = new NodeGenThread(app.getAssetManager(), this);
+		nodeGenThread.start();
 	}
 
 	public Node getNode() {
@@ -46,47 +48,59 @@ public class World extends AbstractAppState {
 	@Override
 	public void update(float tpf) {
 
-		List<Vector3i> updates = new ArrayList<>();
+		if (nodeGenThread.isEmpty()) {
 
-		synchronized (chunks) {
-			for (Map.Entry<Vector3i, Chunk> entry : chunks.entrySet()) {
-				Chunk chunk = entry.getValue();
-				if (chunk.hasUpdated(System.nanoTime() - (long) (tpf * 1000000000))) {
-					updates.add(entry.getKey());
+			long now = System.nanoTime();
 
-					tryAdd(updates, entry.getKey().add(-1, 0, 0));
-					tryAdd(updates, entry.getKey().add(1, 0, 0));
-					tryAdd(updates, entry.getKey().add(0, -1, 0));
-					tryAdd(updates, entry.getKey().add(0, 1, 0));
-					tryAdd(updates, entry.getKey().add(0, 0, -1));
-					tryAdd(updates, entry.getKey().add(0, 0, 1));
+			List<Vector3i> updates = new ArrayList<>();
+
+			synchronized (chunks) {
+				for (Map.Entry<Vector3i, Chunk> entry : chunks.entrySet()) {
+					Chunk chunk = entry.getValue();
+					if (chunk.hasUpdated(lastTime)) {
+						updates.add(entry.getKey());
+
+						tryAdd(updates, entry.getKey().add(-1, 0, 0));
+						tryAdd(updates, entry.getKey().add(1, 0, 0));
+						tryAdd(updates, entry.getKey().add(0, -1, 0));
+						tryAdd(updates, entry.getKey().add(0, 1, 0));
+						tryAdd(updates, entry.getKey().add(0, 0, -1));
+						tryAdd(updates, entry.getKey().add(0, 0, 1));
+					}
 				}
 			}
-		}
 
-		for (LightMap map : lightMaps.values()) {
-			for (Vector3i pos : updates) {
-				if (!map.isInit() || map.contains(pos)) {
-					map.generate(this);
-					break;
-				}
-			}
-		}
-
-		for (Vector3i pos : updates) {
-
-			List<LightChunk> light = new ArrayList<>();
+			lastTime = now;
 
 			for (LightMap map : lightMaps.values()) {
-				if (map.contains(pos)) {
-					light.add(map.getChunk(pos));
+				for (Vector3i pos : updates) {
+					if (!map.isInit() || map.contains(pos)) {
+						map.generate(this);
+						break;
+					}
 				}
 			}
 
-			Node chunkNode = ChunkUtils.genNode(chunks.get(pos), assetManager, this, pos, light);
-			node.detachChildNamed(pos.toString());
-			if (chunkNode.getChildren().size() > 0) {
-				node.attachChild(chunkNode);
+			for (Vector3i pos : updates) {
+
+				List<LightChunk> light = new ArrayList<>();
+
+				for (LightMap map : lightMaps.values()) {
+					if (map.contains(pos)) {
+						light.add(map.getChunk(pos));
+					}
+				}
+
+				nodeGenThread.add(chunks.get(pos), pos, light);
+			}
+
+		} else {
+
+			for (Map.Entry<Vector3i, Node> entry : nodeGenThread.getDone().entrySet()) {
+				node.detachChildNamed(entry.getKey().toString());
+				if (entry.getValue().getChildren().size() > 0) {
+					node.attachChild(entry.getValue());
+				}
 			}
 		}
 	}

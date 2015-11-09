@@ -11,7 +11,7 @@ import com.mthwate.conk.user.User;
 import com.mthwate.conk.user.UserStore;
 import com.mthwate.conk.world.Chunk;
 import com.mthwate.conk.world.Dimension;
-import com.mthwate.conk.world.generator.RandomWorldGenerator;
+import com.mthwate.conk.world.DimensionStore;
 import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class PhysicsAppState extends AbstractAppState {
 
 	private final Map<Vector3i, Node> chunks = new HashMap<>();
 
-	private final Dimension dim = new Dimension("world", new RandomWorldGenerator());//TODO remove this
+	private final Dimension dim = DimensionStore.getDimension();//TODO remove this
 
 	public PhysicsAppState(BulletAppState bulletAppState, Node rootNode) {
 		this.bulletAppState = bulletAppState;
@@ -47,6 +47,7 @@ public class PhysicsAppState extends AbstractAppState {
 		List<Vector3i> chunkPos = new ArrayList<>();
 
 		for (User user : UserStore.getUsers()) {
+
 			Vector3f pos = user.getPosition();
 
 			int cx = PositionUtils.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
