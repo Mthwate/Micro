@@ -9,6 +9,7 @@ import com.jme3.network.kernel.KernelException;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.JumpAction;
+import com.mthwate.conk.action.LeftClickAction;
 import com.mthwate.conk.action.MoveBackwardAction;
 import com.mthwate.conk.action.MoveForwardAction;
 import com.mthwate.conk.action.MoveLeftAction;
@@ -51,7 +52,10 @@ public class ClientApp extends SimpleApplication {
 
 			cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), 0.001f, 1000f);
 
-			//ActionUtils.register(inputManager, new LeftClickAction(cam, world));
+			WorldStore.init(stateManager, rootNode);
+			WorldStore.setWorld(new World());
+
+			ActionUtils.register(inputManager, new LeftClickAction(cam, WorldStore.getWorld(), client));
 			//ActionUtils.register(inputManager, new RightClickAction(cam, world));
 			ActionUtils.register(inputManager, new JumpAction(client));
 			ActionUtils.register(inputManager, new MoveForwardAction());
@@ -61,9 +65,6 @@ public class ClientApp extends SimpleApplication {
 
 
 			stateManager.attach(new MovementAppState(client));
-
-			WorldStore.init(stateManager, rootNode);
-			WorldStore.setWorld(new World());
 
 
 			client.addMessageListener(new BlockUpdateListener(), BlockUpdateMessage.class);

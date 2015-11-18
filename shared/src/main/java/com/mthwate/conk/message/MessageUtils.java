@@ -14,6 +14,7 @@ public class MessageUtils {
 		Serializer.registerClass(PlayerPositionMessage.class);
 		Serializer.registerClass(JumpMessage.class);
 		Serializer.registerClass(MoveMessage.class);
+		Serializer.registerClass(BlockBreakMessage.class);
 	}
 
 }

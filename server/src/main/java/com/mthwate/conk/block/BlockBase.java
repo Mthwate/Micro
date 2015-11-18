@@ -17,4 +17,14 @@ public abstract class BlockBase implements Block {
 		return data;
 	}
 
+	@Override
+	public boolean isSolid() {
+		return true;
+	}
+
+	@Override
+	public String[] getTextures() {
+		return new String[] {getName()};
+	}
+
 }

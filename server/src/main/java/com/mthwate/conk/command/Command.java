@@ -9,6 +9,6 @@ public interface Command {
 
 	String getName();
 
-	void run(ServerApp app);
+	void run(ServerApp app, String[] args);
 
 }

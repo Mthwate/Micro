@@ -15,8 +15,27 @@ public class BlockUpdateListener extends AbstractClientListener<BlockUpdateMessa
 	@Override
 	protected void onReceived(Client source, BlockUpdateMessage m) {
 		Vector3i pos = m.getPosition();
-		if (m.getTexture() != null) {
-			WorldStore.getWorld().setBlock(pos.getX(), pos.getY(), pos.getZ(), new BlockInfo(new TextureInfo(m.getTexture())));
+		String[] textures = m.getTextures();
+		if (textures != null) {
+
+			TextureInfo textureInfo = null;
+
+			switch (m.getTextures().length) {
+				case 1:
+					textureInfo = new TextureInfo(textures[0]);
+					break;
+				case 2:
+					textureInfo = new TextureInfo(textures[0], textures[1]);
+					break;
+				case 3:
+					textureInfo = new TextureInfo(textures[0], textures[1], textures[2]);
+					break;
+				case 6:
+					textureInfo = new TextureInfo(textures[0], textures[1], textures[2], textures[3], textures[4], textures[5]);
+					break;
+			}
+
+			WorldStore.getWorld().setBlock(pos.getX(), pos.getY(), pos.getZ(), new BlockInfo(textureInfo));
 		} else {
 			WorldStore.getWorld().setBlock(pos.getX(), pos.getY(), pos.getZ(), null);
 		}

@@ -13,8 +13,14 @@ public class BlockAir extends BlockBase {
 		return "air";
 	}
 
+	@Override
 	public boolean isSolid() {
 		return false;
+	}
+
+	@Override
+	public String[] getTextures() {
+		return null;
 	}
 
 }

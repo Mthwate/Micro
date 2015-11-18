@@ -1,6 +1,5 @@
 package com.mthwate.conk;
 
-import com.jme3.math.FastMath;
 import com.mthwate.conk.info.BlockInfo;
 
 /**
@@ -12,7 +11,7 @@ public class Chunk {
 
 	private final BlockInfo[][][] blocks;
 
-	private UpdateChecker updateChecker = new UpdateChecker();
+	private final UpdateChecker updateChecker = new UpdateChecker();
 
 	public Chunk(int size) {
 		this.size = size;

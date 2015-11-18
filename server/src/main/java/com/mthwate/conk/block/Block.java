@@ -13,4 +13,5 @@ public interface Block {
 
 	boolean isSolid();
 
+	String[] getTextures();
 }

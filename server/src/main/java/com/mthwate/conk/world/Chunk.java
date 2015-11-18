@@ -4,6 +4,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.mthwate.conk.PropUtils;
+import com.mthwate.conk.UpdateChecker;
 import com.mthwate.conk.block.Block;
 import com.mthwate.datlib.math.vector.Vector3i;
 import jme3tools.optimize.GeometryBatchFactory;
@@ -19,14 +20,14 @@ public class Chunk {
 
 	private Block[][][] blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
 
-	private boolean changed = true;
+	private final UpdateChecker updateChecker = new UpdateChecker();
 
 	public Block get(int x, int y, int z) {
 		return blocks[x][y][z];
 	}
 
 	public void set(Block block, int x, int y, int z) {
-		changed = true;
+		updateChecker.update();
 		blocks[x][y][z] = block;
 	}
 
@@ -53,11 +54,8 @@ public class Chunk {
 		return node;
 	}
 
-	public void setChanged(boolean changed) {
-		this.changed = changed;
+	public boolean hasUpdated(long lastCheck) {
+		return updateChecker.hasUpdated(lastCheck);
 	}
 
-	public boolean hasChanged() {
-		return changed;
-	}
 }

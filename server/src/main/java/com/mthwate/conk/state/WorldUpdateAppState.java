@@ -11,6 +11,8 @@ import com.mthwate.conk.world.Chunk;
 import com.mthwate.conk.world.Dimension;
 import com.mthwate.conk.world.DimensionStore;
 import com.mthwate.datlib.math.vector.Vector3i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +30,14 @@ public class WorldUpdateAppState extends TimedAppState {
 
 	private final Map<String, Vector3i> cache = new HashMap<>();
 
+	private long lastTime = 0;
+
+	private static final Logger log = LoggerFactory.getLogger(WorldUpdateAppState.class);
+
 	@Override
 	public void timedUpdate(float tpf) {
+
+		long now = System.nanoTime();
 
 		for (User user : UserStore.getUsers()) {
 
@@ -71,6 +79,10 @@ public class WorldUpdateAppState extends TimedAppState {
 				for (Vector3i chunk : oldChunks) {
 					if (!newChunks.contains(chunk)) {
 						clearChunk(user.getConnection(), chunk.getX(), chunk.getY(), chunk.getZ());
+					} else {
+						if (dim.hasUpdated(chunk, lastTime)) {
+							updateChunk(user.getConnection(), chunk.getX(), chunk.getY(), chunk.getZ());
+						}
 					}
 				}
 
@@ -79,11 +91,25 @@ public class WorldUpdateAppState extends TimedAppState {
 						updateChunk(user.getConnection(), chunk.getX(), chunk.getY(), chunk.getZ());
 					}
 				}
+			} else {
+				for (int ix = -RADIUS; ix <= RADIUS; ix++) {
+					for (int iy = -RADIUS; iy <= RADIUS; iy++) {
+						for (int iz = -RADIUS; iz <= RADIUS; iz++) {
+							Vector3i chunk = chunkPos.add(ix, iy, iz);
+							if (dim.hasUpdated(chunk, lastTime)) {
+								updateChunk(user.getConnection(), chunk.getX(), chunk.getY(), chunk.getZ());
+							}
+						}
+					}
+				}
 			}
 		}
+
+		lastTime = now;
 	}
 
 	private void updateChunk(HostedConnection connection, int cx, int cy, int cz) {
+		log.info("Updating chunk ({}, {}, {})", cx, cy, cz);
 		Vector3i basePos = new Vector3i(cx * Chunk.CHUNK_SIZE, cy * Chunk.CHUNK_SIZE, cz * Chunk.CHUNK_SIZE);
 		List<BlockUpdateMessage> updates = new ArrayList<>((int) Math.pow(Chunk.CHUNK_SIZE, 3));
 		for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {
@@ -91,9 +117,7 @@ public class WorldUpdateAppState extends TimedAppState {
 				for (int z = 0; z < Chunk.CHUNK_SIZE; z++) {
 					Vector3i pos = basePos.add(x, y, z);
 					Block block = dim.getBlock(pos);
-					if (!block.getName().equals("air")) {
-						updates.add(new BlockUpdateMessage(pos, block.getName()));
-					}
+					updates.add(new BlockUpdateMessage(pos, block.getTextures()));
 				}
 			}
 		}
@@ -101,6 +125,7 @@ public class WorldUpdateAppState extends TimedAppState {
 	}
 
 	private static void clearChunk(HostedConnection connection, int cx, int cy, int cz) {
+		log.info("Clearing chunk ({}, {}, {})", cx, cy, cz);
 		Vector3i basePos = new Vector3i(cx * Chunk.CHUNK_SIZE, cy * Chunk.CHUNK_SIZE, cz * Chunk.CHUNK_SIZE);
 		List<BlockUpdateMessage> updates = new ArrayList<>((int) Math.pow(Chunk.CHUNK_SIZE, 3));
 		for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {

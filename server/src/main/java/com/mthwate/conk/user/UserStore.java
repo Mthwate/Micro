@@ -24,7 +24,11 @@ public class UserStore {
 	private static Map<String, User> users = new HashMap<>();
 
 	public static User getUser(HostedConnection connection) {
-		return users.get(getUsername(connection));
+		return getUser(getUsername(connection));
+	}
+
+	public static User getUser(String username) {
+		return users.get(username);
 	}
 
 	public static List<User> getUsers() {

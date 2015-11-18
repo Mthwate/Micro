@@ -13,8 +13,9 @@ public class BlockDirt extends BlockBase {
 		return "dirt";
 	}
 
-	public boolean isSolid() {
-		return true;
+	@Override
+	public String[] getTextures() {
+		return new String[] {getName(), getName() + "Side"};
 	}
 
 }

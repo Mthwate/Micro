@@ -71,15 +71,29 @@ public class Dimension {
 		return new File(WORLD_DIR, name);
 	}
 
-	public void setChanged(Vector3i pos, boolean changed) {
-		getChunk(pos).setChanged(changed);
-	}
-
-	public boolean hasChanged(Vector3i pos) {
-		return getChunk(pos).hasChanged();
+	public boolean hasUpdated(Vector3i pos, long lastCheck) {
+		return getChunk(pos).hasUpdated(lastCheck);
 	}
 
 	public Node genNode(Vector3i pos) {
 		return getChunk(pos).genNode(pos);
+	}
+
+	public void setBlock(Block block, Vector3i pos) {
+		setBlock(block, pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public void setBlock(Block block, int x, int y, int z) {
+		int size = Chunk.CHUNK_SIZE;
+
+		int cx = PositionUtils.getChunkFromGlobal(x, size);
+		int cy = PositionUtils.getChunkFromGlobal(y, size);
+		int cz = PositionUtils.getChunkFromGlobal(z, size);
+
+		int lx = PositionUtils.getLocalFromGlobal(x, size);
+		int ly = PositionUtils.getLocalFromGlobal(y, size);
+		int lz = PositionUtils.getLocalFromGlobal(z, size);
+
+		getChunk(cx, cy, cz).set(block, lx, ly, lz);
 	}
 }

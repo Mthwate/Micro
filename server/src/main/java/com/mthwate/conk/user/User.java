@@ -1,11 +1,11 @@
 package com.mthwate.conk.user;
 
-import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.network.HostedConnection;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.mthwate.conk.PropUtils;
+import com.mthwate.conk.physics.ConkCharacterControl;
 
 /**
  * @author mthwate
@@ -18,7 +18,7 @@ public class User {
 
 	private final HostedConnection connection;
 
-	BetterCharacterControl control = new BetterCharacterControl(PropUtils.getPlayerRadius(), PropUtils.getPlayerHeight(), PropUtils.getPlayerMass());
+	ConkCharacterControl control = new ConkCharacterControl(PropUtils.getPlayerRadius(), PropUtils.getPlayerHeight(), PropUtils.getPlayerMass());
 
 	public User(String name, HostedConnection connection) {
 		this.name = name;
@@ -46,7 +46,7 @@ public class User {
 		return connection;
 	}
 
-	public BetterCharacterControl getControl() {
+	public ConkCharacterControl getControl() {
 		return control;
 	}
 }

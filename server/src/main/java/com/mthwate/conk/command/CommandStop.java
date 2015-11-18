@@ -14,7 +14,7 @@ public class CommandStop implements Command {
 	}
 
 	@Override
-	public void run(ServerApp app) {
+	public void run(ServerApp app, String[] args) {
 		app.stop();
 	}
 

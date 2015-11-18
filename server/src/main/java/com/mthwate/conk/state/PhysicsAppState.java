@@ -36,6 +36,8 @@ public class PhysicsAppState extends AbstractAppState {
 
 	private final Dimension dim = DimensionStore.getDimension();//TODO remove this
 
+	private long lastTime = 0;
+
 	public PhysicsAppState(BulletAppState bulletAppState, Node rootNode) {
 		this.bulletAppState = bulletAppState;
 		this.rootNode = rootNode;
@@ -61,20 +63,30 @@ public class PhysicsAppState extends AbstractAppState {
 					}
 				}
 			}
+
+			if (user.getControl().isOnGround()) {
+				user.getControl().setFriction(0.5f);
+			} else {
+				user.getControl().setFriction(0);
+			}
 		}
+
+		long now = System.nanoTime();
 
 		for (Vector3i pos : chunkPos) {
 
-			if (dim.hasChanged(pos)) {
-				dim.setChanged(pos, false);
+			if (dim.hasUpdated(pos, lastTime)) {
+
+				System.out.println(pos);
 
 				if (chunks.containsKey(pos)) {
-					chunks.get(pos).removeFromParent();
 					for (int i = 0; i < chunks.get(pos).getNumControls(); i++) {
+						System.out.println("A");
 						Control control = chunks.get(pos).getControl(i);
 						chunks.get(pos).removeControl(control);
 						bulletAppState.getPhysicsSpace().remove(control);
 					}
+					chunks.get(pos).removeFromParent();
 				}
 
 				chunks.remove(pos);
@@ -89,6 +101,8 @@ public class PhysicsAppState extends AbstractAppState {
 			}
 
 		}
+
+		lastTime = now;
 	}
 
 }

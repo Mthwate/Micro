@@ -6,8 +6,10 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.controls.Trigger;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
+import com.jme3.network.Client;
 import com.jme3.renderer.Camera;
 import com.mthwate.conk.World;
+import com.mthwate.conk.message.BlockBreakMessage;
 import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +25,12 @@ public class LeftClickAction extends ActionHandler {
 
 	private final World world;
 
-	public LeftClickAction(Camera cam, World world) {
+	private final Client client;
+
+	public LeftClickAction(Camera cam, World world, Client client) {
 		this.cam = cam;
 		this.world = world;
+		this.client = client;
 	}
 
 	@Override
@@ -49,7 +54,8 @@ public class LeftClickAction extends ActionHandler {
 					case 2: coords = coords.add(0, 0, coord); break;
 				}
 			}
-			world.setBlock(coords.getX(), coords.getY(), coords.getZ(), null);
+			//world.setBlock(coords.getX(), coords.getY(), coords.getZ(), null);
+			client.send(new BlockBreakMessage(coords));
 		}
 	}
 

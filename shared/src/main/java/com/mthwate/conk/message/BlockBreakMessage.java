@@ -7,29 +7,22 @@ import com.mthwate.datlib.math.vector.Vector3i;
  * @author mthwate
  */
 @Serializable
-public class BlockUpdateMessage extends AbstractMessage {
+public class BlockBreakMessage extends AbstractMessage {
 
 	private int x;
 	private int y;
 	private int z;
 
-	private String[] textures;
+	public BlockBreakMessage() {}
 
-	public BlockUpdateMessage() {}
-
-	public BlockUpdateMessage(Vector3i pos, String[] textures) {
+	public BlockBreakMessage(Vector3i pos) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
-		this.textures = textures;
 	}
 
-	public Vector3i getPosition() {
+	public Vector3i getPos() {
 		return new Vector3i(x, y, z);
-	}
-
-	public String[] getTextures() {
-		return textures;
 	}
 
 }
