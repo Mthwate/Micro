@@ -1,5 +1,6 @@
 package com.mthwate.conk.message;
 
+import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
 import com.mthwate.datlib.math.vector.Vector3i;
 
