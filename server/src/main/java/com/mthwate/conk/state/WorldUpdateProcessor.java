@@ -123,7 +123,10 @@ public class WorldUpdateProcessor implements Callable<Queue<WorldUpdate>> {
 					Vector3i pos = basePos.add(x, y, z);
 					if (isVisible(pos)) {
 						Block block = dim.getBlock(pos);
-						updates.add(new BlockUpdateMessage(pos, block.getTextures()));
+						String[] textures = block.getTextures();
+						if (textures.length > 0) {
+							updates.add(new BlockUpdateMessage(pos, textures));
+						}
 					}
 				}
 			}
