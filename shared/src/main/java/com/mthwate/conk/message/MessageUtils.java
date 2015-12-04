@@ -15,6 +15,7 @@ public class MessageUtils {
 		Serializer.registerClass(JumpMessage.class);
 		Serializer.registerClass(MoveMessage.class);
 		Serializer.registerClass(BlockBreakMessage.class);
+		Serializer.registerClass(ClearGroupMessage.class);
 	}
 
 }

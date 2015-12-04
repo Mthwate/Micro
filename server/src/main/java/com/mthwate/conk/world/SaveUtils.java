@@ -9,6 +9,7 @@ import com.mthwate.conk.block.Block;
 import com.mthwate.conk.block.BlockStore;
 import com.mthwate.conk.user.User;
 import com.mthwate.datlib.IOUtils;
+import com.mthwate.datlib.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ public class SaveUtils {
 	private static final File USER_DIR = new File(PropUtils.getUserDir());
 
 	public static Chunk loadChunk(File file) {
+		Timer timer = new Timer();
 		SaveFormat save = null;
 		Reader reader = null;
 		try {
@@ -60,6 +62,8 @@ public class SaveUtils {
 				}
 			}
 		}
+
+		log.info("Loaded chunk from {} in {} ns", file, timer.getNano());
 
 		return chunk;
 	}

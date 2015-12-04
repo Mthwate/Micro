@@ -15,4 +15,8 @@ public class PropUtils {
 		return PropertyUtils.getProperty(FILE, key, defaultValue);
 	}
 
+	public static String getIp() {
+		return getProperty("ip", "localhost");
+	}
+
 }

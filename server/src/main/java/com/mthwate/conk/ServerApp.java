@@ -15,7 +15,7 @@ import com.mthwate.conk.message.JumpMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.MoveMessage;
-import com.mthwate.conk.state.PhysicsAppState;
+import com.mthwate.conk.state.PhysicsUpdateAppState;
 import com.mthwate.conk.state.PositionAppState;
 import com.mthwate.conk.state.WorldUpdateAppState;
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ public class ServerApp extends SimpleApplication {
 
 
 
-			stateManager.attach(new PhysicsAppState(bulletAppState, rootNode));
+			stateManager.attach(new PhysicsUpdateAppState(bulletAppState, rootNode));
 			stateManager.attach(new PositionAppState());
 			stateManager.attach(new WorldUpdateAppState());
 
@@ -104,14 +104,9 @@ public class ServerApp extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf) {
-		/*
-		for (HostedConnection connection : server.getConnections()) {
-			User user = UserStore.getUser(connection);
-			if (user != null) {
-				System.out.println(user.getName() + ": " + user.getPosition());
-			}
+		if (tpf * 20 > 1) {
+			log.info("Tick took too long ({} sec)", tpf);
 		}
-		*/
 	}
 
 	@Override

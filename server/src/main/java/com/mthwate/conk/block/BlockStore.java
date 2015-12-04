@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,11 @@ import java.util.Set;
  */
 public class BlockStore {
 
-	private static final Map<String, Block> blocks = new HashMap<>();
+	private static final Map<String, Block> blocks = Collections.synchronizedMap(new HashMap<String, Block>());
 
 	private static final Logger log = LoggerFactory.getLogger(BlockStore.class);
 
-	private static void init() {
+	private synchronized static void init() {
 		Reflections reflections = new Reflections();
 
 		Set<Class<? extends Block>> types = reflections.getSubTypesOf(Block.class);
@@ -37,34 +38,22 @@ public class BlockStore {
 		}
 	}
 
-	private static void tryInit() {
+	private synchronized static void tryInit() {
 		if (blocks.isEmpty()) {
 			init();
 		}
 	}
 
-	public static Block getBlock(String name) {
+	public synchronized static Block getBlock(String name) {
 		tryInit();
-		Block block = null;
-		Class<? extends Block> clazz = blocks.get(name).getClass();
-		try {
-			 block = clazz.newInstance();
-		} catch (ReflectiveOperationException e) {
-			log.error("Could not instantiate block {}", clazz);
-		}
-		return block;
+		return blocks.get(name);
 	}
 
-	public static List<Block> getAllBlocks() {
+	public  synchronized static List<Block> getAllBlocks() {
 		tryInit();
 		List<Block> blockList = new ArrayList<>();
 		for (Block block : blocks.values()) {
-			Class<? extends Block> clazz = block.getClass();
-			try {
-				blockList.add(clazz.newInstance());
-			} catch (ReflectiveOperationException e) {
-				log.error("Could not instantiate block {}", clazz);
-			}
+			blockList.add(block);
 		}
 		return blockList;
 	}

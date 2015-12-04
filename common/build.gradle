@@ -1,4 +1,5 @@
 dependencies {
 	compile 'com.mthwate.datlib:datlib:1.3'
+	compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-2423'
 	testCompile 'junit:junit:4.12'
 }

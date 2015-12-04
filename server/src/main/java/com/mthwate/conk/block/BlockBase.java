@@ -23,6 +23,11 @@ public abstract class BlockBase implements Block {
 	}
 
 	@Override
+	public boolean isTransparent() {
+		return false;
+	}
+
+	@Override
 	public String[] getTextures() {
 		return new String[] {getName()};
 	}

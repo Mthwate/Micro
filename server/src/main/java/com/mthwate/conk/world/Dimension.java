@@ -6,17 +6,19 @@ import com.mthwate.conk.PropUtils;
 import com.mthwate.conk.block.Block;
 import com.mthwate.conk.world.generator.WorldGenerator;
 import com.mthwate.datlib.math.vector.Vector3i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author mthwate
  */
 public class Dimension {
-
-	private final String name;
 
 	private final WorldGenerator generator;
 
@@ -24,9 +26,15 @@ public class Dimension {
 
 	private static final File WORLD_DIR = new File(PropUtils.getWorldDir());
 
+	private static final Logger log = LoggerFactory.getLogger(Dimension.class);
+
+	private final File directory;
+
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
 	public Dimension(String name, WorldGenerator generator) {
-		this.name = name;
 		this.generator = generator;
+		directory = new File(WORLD_DIR, name);
 	}
 
 	public Block getBlock(Vector3i pos) {
@@ -50,14 +58,8 @@ public class Dimension {
 	private Chunk getChunk(Vector3i pos) {
 		Chunk chunk = chunks.get(pos);
 		if (chunk == null) {
-			File file = new File(getDimensionDir(), pos.getX() + "." + pos.getY() + "." + pos.getZ() + ".json");
-			if (file.exists()) {
-				chunk = SaveUtils.loadChunk(file);
-			}
-			if (chunk == null) {
-				chunk = generator.genChunk(pos);
-				SaveUtils.saveChunk(chunk, file);
-			}
+			ChunkLoader loader = new ChunkLoader(pos, directory, generator);
+			chunk = loader.call();
 			chunks.put(pos, chunk);
 		}
 		return chunk;
@@ -65,10 +67,6 @@ public class Dimension {
 
 	private Chunk getChunk(int x, int y, int z) {
 		return getChunk(new Vector3i(x, y, z));
-	}
-
-	private File getDimensionDir() {
-		return new File(WORLD_DIR, name);
 	}
 
 	public boolean hasUpdated(Vector3i pos, long lastCheck) {
@@ -96,4 +94,5 @@ public class Dimension {
 
 		getChunk(cx, cy, cz).set(block, lx, ly, lz);
 	}
+
 }

@@ -4,6 +4,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.mthwate.datlib.math.vector.Vector3i;
 
+import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,10 +14,12 @@ import java.util.Map;
 /**
  * @author mthwate
  */
-public class NodeGenThread extends Thread {
+public class NodeGenThread extends Thread implements Closeable {
 
 	private final AssetManager assetManager;
 	private final World world;
+
+	private boolean run = true;
 
 	private final List<Task> tasks = Collections.synchronizedList(new ArrayList<Task>());
 
@@ -29,7 +32,7 @@ public class NodeGenThread extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (run) {
 			if (!tasks.isEmpty()) {
 				Task task = tasks.get(0);
 				tasks.remove(task);
@@ -62,7 +65,7 @@ public class NodeGenThread extends Thread {
 		return tasks.isEmpty() && done.isEmpty();
 	}
 
-	private class Task {
+	private static class Task {
 
 		private final Chunk chunk;
 		private final Vector3i pos;
@@ -74,6 +77,11 @@ public class NodeGenThread extends Thread {
 			this.light = light;
 		}
 
+	}
+
+	@Override
+	public void close() {
+		run = false;
 	}
 
 }

@@ -15,14 +15,17 @@ import com.mthwate.conk.action.MoveForwardAction;
 import com.mthwate.conk.action.MoveLeftAction;
 import com.mthwate.conk.action.MoveRightAction;
 import com.mthwate.conk.listener.BlockUpdateListener;
+import com.mthwate.conk.listener.ClearGroupListener;
 import com.mthwate.conk.listener.GroupUpdateListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
+import com.mthwate.conk.message.ClearGroupMessage;
 import com.mthwate.conk.message.GroupUpdateMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.PlayerPositionMessage;
 import com.mthwate.conk.state.MovementAppState;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,9 @@ public class ClientApp extends SimpleApplication {
 
 	@Deprecated
 	private static final int PORT = 6969;
+
+	@Deprecated
+	private static final String IP = PropUtils.getIp();
 
 	private Client client;
 
@@ -69,6 +75,7 @@ public class ClientApp extends SimpleApplication {
 
 			client.addMessageListener(new BlockUpdateListener(), BlockUpdateMessage.class);
 			client.addMessageListener(new GroupUpdateListener(), GroupUpdateMessage.class);
+			client.addMessageListener(new ClearGroupListener(), ClearGroupMessage.class);
 			client.addMessageListener(new PlayerPositionListener(cam, guiNode, guiFont), PlayerPositionMessage.class);
 
 
@@ -76,7 +83,7 @@ public class ClientApp extends SimpleApplication {
 
 			MessageUtils.register();
 
-			client.send(new LoginMessage("Mthwate"));
+			client.send(new LoginMessage(RandomStringUtils.randomAlphabetic(8)));
 
 			flyCam.setZoomSpeed(0);
 			flyCam.setMoveSpeed(0);
@@ -88,7 +95,7 @@ public class ClientApp extends SimpleApplication {
 
 	private boolean connect() {
 		try {
-			client = Network.connectToServer("localhost", PORT);
+			client = Network.connectToServer(IP, PORT);
 		} catch (IOException e) {
 			log.error("Failed to connect to server on port {}", PORT);
 		}
@@ -120,6 +127,8 @@ public class ClientApp extends SimpleApplication {
 
 	@Override
 	public void destroy() {
+
+		WorldStore.getWorld().close();
 
 		if (client != null && client.isConnected()) {
 			client.close();

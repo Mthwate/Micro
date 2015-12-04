@@ -23,6 +23,7 @@ public class WorldStore {
 		if (WorldStore.world != null) {
 			stateManager.detach(WorldStore.world);
 			rootNode.detachChild(WorldStore.world.getNode());
+			world.close();
 		}
 
 		WorldStore.world = world;

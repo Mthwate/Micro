@@ -14,7 +14,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture2D;
 import com.jme3.texture.image.ImageRaster;
 import com.jme3.util.BufferUtils;
 import com.mthwate.conk.info.BlockInfo;
@@ -54,7 +53,7 @@ public class AssetStore {
 			img.setHeight(1);
 			img.setData(BufferUtils.createByteBuffer((int) Math.ceil(Image.Format.ABGR8.getBitsPerPixel() / 8)));
 			ImageRaster.create(img).setPixel(0, 0, light);
-			Texture2D t = new Texture2D(img);
+			//Texture2D t = new Texture2D(img);
 			//material.setTexture("LightMap", t);//TODO uncomment this
 
 			if (info.getTextureInfo().isTransparent()) {

@@ -14,16 +14,16 @@ public class User {
 
 	private final String name;
 
-	private final Node node = new Node();
+	private final Spatial spatial = new Node();
 
 	private final HostedConnection connection;
 
-	ConkCharacterControl control = new ConkCharacterControl(PropUtils.getPlayerRadius(), PropUtils.getPlayerHeight(), PropUtils.getPlayerMass());
+	private final ConkCharacterControl control = new ConkCharacterControl(PropUtils.getPlayerRadius(), PropUtils.getPlayerHeight(), PropUtils.getPlayerMass());
 
 	public User(String name, HostedConnection connection) {
 		this.name = name;
 		this.connection = connection;
-		node.addControl(control);
+		spatial.addControl(control);
 	}
 
 	public String getName() {
@@ -31,7 +31,7 @@ public class User {
 	}
 
 	public Spatial getSpatial() {
-		return node;
+		return spatial;
 	}
 
 	public void setPosition(Vector3f position) {
@@ -39,7 +39,7 @@ public class User {
 	}
 
 	public Vector3f getPosition() {
-		return node.getLocalTranslation();
+		return spatial.getLocalTranslation();
 	}
 
 	public HostedConnection getConnection() {
@@ -49,4 +49,5 @@ public class User {
 	public ConkCharacterControl getControl() {
 		return control;
 	}
+
 }

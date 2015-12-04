@@ -32,11 +32,7 @@ public class UserStore {
 	}
 
 	public static List<User> getUsers() {
-		List<User> users = new ArrayList<>();
-		for (User user : UserStore.users.values()) {
-			users.add(user);
-		}
-		return users;
+		return new ArrayList<>(users.values());
 	}
 
 	public static void loginUser(HostedConnection connection, String username, Node physicsNode, BulletAppState bulletAppState) {

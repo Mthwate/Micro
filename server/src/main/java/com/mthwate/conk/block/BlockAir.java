@@ -19,6 +19,11 @@ public class BlockAir extends BlockBase {
 	}
 
 	@Override
+	public boolean isTransparent() {
+		return true;
+	}
+
+	@Override
 	public String[] getTextures() {
 		return null;
 	}

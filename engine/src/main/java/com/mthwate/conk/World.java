@@ -9,6 +9,7 @@ import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * @author mthwate
  */
-public class World extends AbstractAppState {
+public class World extends AbstractAppState implements Closeable {
 
 	private static final Logger log = LoggerFactory.getLogger(World.class);
 
@@ -171,5 +172,10 @@ public class World extends AbstractAppState {
 
 	public void updateMarkChunk(Vector3i pos) {
 		chunks.get(pos).markUpdated();
+	}
+
+	@Override
+	public void close() {
+		nodeGenThread.close();
 	}
 }

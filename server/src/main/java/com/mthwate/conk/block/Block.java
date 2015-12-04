@@ -13,5 +13,7 @@ public interface Block {
 
 	boolean isSolid();
 
+	boolean isTransparent();
+
 	String[] getTextures();
 }
