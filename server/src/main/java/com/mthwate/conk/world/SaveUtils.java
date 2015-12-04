@@ -55,7 +55,6 @@ public class SaveUtils {
 						BlockSaveFormat blockSave = save.blocks[x][y][z];
 						if (blockSave != null) {
 							Block block = BlockStore.getBlock(blockSave.name);
-							block.setData(block.getData());
 							chunk.set(block, x, y, z);
 						}
 					}
@@ -79,7 +78,6 @@ public class SaveUtils {
 					if (block != null) {
 						BlockSaveFormat blockSave = new BlockSaveFormat();
 						blockSave.name = block.getName();
-						blockSave.data = block.getData();
 						save.blocks[x][y][z] = blockSave;
 					}
 				}
