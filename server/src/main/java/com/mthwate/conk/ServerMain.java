@@ -6,7 +6,6 @@ import com.mthwate.conk.state.WorldUpdateAppState;
 import com.mthwate.conk.world.SaveUtils;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
@@ -15,7 +14,7 @@ import java.util.logging.LogManager;
  */
 public class ServerMain {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 
 		disableLog(WorldUpdateAppState.class);
 		disableLog(PhysicsUpdateAppState.class);
