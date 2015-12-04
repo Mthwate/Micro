@@ -46,13 +46,9 @@ public class WorldUpdateAppState extends TimedAppState {
 				try {
 					Queue<WorldUpdate> updates = future.get();
 					statistics.set("updates", updates.size());
-					long max = 0;
-					long min = Long.MAX_VALUE;
 					for (WorldUpdate update : updates) {
 						update.getConnection().send(update.getMessage());
 					}
-					statistics.set("longestUpdate", max);
-					statistics.set("shortestUpdate", min);
 					future = null;
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
