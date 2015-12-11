@@ -3,7 +3,10 @@ package com.mthwate.conk.block
 /**
  * @author mthwate
  */
-abstract class BlockBase(override val name: String) : Block {
+abstract class AbstractBlock(override val name: String, private val directory: String = "") : Block {
+
+	val path: String
+		get() = directory + '/' + name;
 
 	override val isSolid: Boolean
 		get() = true
@@ -12,6 +15,6 @@ abstract class BlockBase(override val name: String) : Block {
 		get() = false
 
 	override val textures: Array<String>
-		get() = arrayOf(name)
+		get() = arrayOf(path)
 
 }

@@ -3,6 +3,7 @@ package com.mthwate.conk.state;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Node;
 import com.mthwate.conk.world.Dimension;
+import com.mthwate.datlib.Timer;
 import com.mthwate.datlib.math.vector.Vector3i;
 
 import java.util.ArrayList;
@@ -25,12 +26,20 @@ public class PhysicsUpdateProcessor implements Callable<List<PhysicsUpdate>> {
 
 	@Override
 	public List<PhysicsUpdate> call() {
+		//TODO increase efficiency
+		Timer total = new Timer();
+		long n1 = 0;
+		long n2 = 0;
 		List<PhysicsUpdate> nodeUpdates = new ArrayList<>();
 		for (Vector3i pos : updates) {
 			Node node = dim.genNode(pos);
 			RigidBodyControl nodeControl = new RigidBodyControl(0.0f);
 			node.addControl(nodeControl);
 			nodeUpdates.add(new PhysicsUpdate(pos, node, nodeControl));
+		}
+		long nTotal = total.getNano();
+		if (nTotal > 1000000000) {
+			System.out.println(nTotal + " " + n1 + " " + n2);
 		}
 		return nodeUpdates;
 	}

@@ -92,6 +92,9 @@ public class PhysicsUpdateAppState extends TimedAppState {
 		}
 
 		if (future == null) {
+
+			statistics.set("future", false);
+
 			long nowThread = System.nanoTime();
 
 			List<Vector3i> updates = new ArrayList<>();
@@ -120,6 +123,9 @@ public class PhysicsUpdateAppState extends TimedAppState {
 
 			lastTimeThread = nowThread;
 		} else {
+
+			statistics.set("future", true);
+
 			if (future.isDone()) {
 				try {
 					List<PhysicsUpdate> updates = future.get();

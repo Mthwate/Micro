@@ -124,7 +124,7 @@ public class WorldUpdateProcessor implements Callable<Queue<WorldUpdate>> {
 					if (isVisible(pos)) {
 						Block block = dim.getBlock(pos);
 						String[] textures = block.getTextures();
-						if (textures.length > 0) {
+						if (textures.length > 0) {//TODO this is probably WRONG doesnt send air
 							updates.add(new BlockUpdateMessage(pos, textures));
 						}
 					}
