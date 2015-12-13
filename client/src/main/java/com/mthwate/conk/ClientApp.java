@@ -15,12 +15,12 @@ import com.mthwate.conk.action.MoveForwardAction;
 import com.mthwate.conk.action.MoveLeftAction;
 import com.mthwate.conk.action.MoveRightAction;
 import com.mthwate.conk.listener.BlockUpdateListener;
+import com.mthwate.conk.listener.ChunkUpdateListener;
 import com.mthwate.conk.listener.ClearGroupListener;
-import com.mthwate.conk.listener.GroupUpdateListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
+import com.mthwate.conk.message.ChunkUpdateMessage;
 import com.mthwate.conk.message.ClearGroupMessage;
-import com.mthwate.conk.message.GroupUpdateMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.PlayerPositionMessage;
@@ -50,7 +50,13 @@ public class ClientApp extends SimpleApplication {
 	public void simpleInitApp() {
 		if (connect()) {
 
-			assetManager.registerLocator("assets/textures", ClasspathLocator.class);
+			assetManager.registerLocator("assets/textures/Nature/Surface/Dirt", ClasspathLocator.class);
+			assetManager.registerLocator("assets/textures/Nature/Underground/Stone/Regular", ClasspathLocator.class);
+			assetManager.registerLocator("assets/textures/Nature/Underground/Stone/Cavern", ClasspathLocator.class);
+
+
+
+
 			assetManager.registerLocator("assets/models", ClasspathLocator.class);
 			assetManager.registerLocator("assets/sounds", ClasspathLocator.class);
 			assetManager.registerLoader(BlenderModelLoader.class, "blend");
@@ -74,7 +80,7 @@ public class ClientApp extends SimpleApplication {
 
 
 			client.addMessageListener(new BlockUpdateListener(), BlockUpdateMessage.class);
-			client.addMessageListener(new GroupUpdateListener(), GroupUpdateMessage.class);
+			client.addMessageListener(new ChunkUpdateListener(), ChunkUpdateMessage.class);
 			client.addMessageListener(new ClearGroupListener(), ClearGroupMessage.class);
 			client.addMessageListener(new PlayerPositionListener(cam, guiNode, guiFont), PlayerPositionMessage.class);
 
@@ -123,6 +129,9 @@ public class ClientApp extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf) {
+		if (tpf * 30 > 1) {
+			log.info("Tick took too long ({} sec)", tpf);
+		}
 	}
 
 	@Override

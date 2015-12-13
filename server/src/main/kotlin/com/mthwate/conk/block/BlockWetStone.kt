@@ -6,9 +6,9 @@ import com.mthwate.conk.command.Exec
  * @author mthwate
  */
 @Exec
-class BlockWetStone : AbstractBlock("wetStone", "Nature/Underground/Stone/Cavern") {
+class BlockWetStone : AbstractBlock("wetStone") {
 
 	override val textures: Array<String>
-		get() = arrayOf(path + "1")
+		get() = arrayOf(name + "1")
 
 }

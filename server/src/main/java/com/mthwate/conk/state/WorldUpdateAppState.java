@@ -33,9 +33,20 @@ public class WorldUpdateAppState extends TimedAppState {
 
 	private long lastTime = 0;
 
+	private Queue<WorldUpdate> updates;
+
 	@Override
 	public void timedUpdate(float tpf) {
-		if (future == null) {
+		if (updates != null) {
+
+			if (updates.size() > 0) {
+				WorldUpdate update = updates.remove();
+				update.getConnection().send(update.getMessage());
+			} else {
+				updates = null;
+			}
+
+		} else if (future == null) {
 			statistics.set("futureValue", false);
 			long now = System.nanoTime();
 			future = executor.submit(new WorldUpdateProcessor(cache, dim, lastTime, RADIUS));
@@ -44,11 +55,7 @@ public class WorldUpdateAppState extends TimedAppState {
 			statistics.set("futureValue", true);
 			if (future.isDone()) {
 				try {
-					Queue<WorldUpdate> updates = future.get();
-					statistics.set("updates", updates.size());
-					for (WorldUpdate update : updates) {
-						update.getConnection().send(update.getMessage());
-					}
+					updates = future.get();
 					future = null;
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
