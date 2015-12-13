@@ -22,7 +22,7 @@ public class ChunkUpdateMessage extends AbstractMessage {
 	private int sizeY;
 	private int sizeZ;
 
-	private int[] pos;
+	private byte[] pos;
 
 	private List<String[]> textures = new ArrayList<>();
 
@@ -81,14 +81,14 @@ public class ChunkUpdateMessage extends AbstractMessage {
 			textures.add(strArray);
 		}
 
-		pos = new int[sizeX * sizeY * sizeZ];
+		pos = new byte[sizeX * sizeY * sizeZ];
 
 		int i = 0;
 
 		for (int x = 0; x < sizeX; x++) {
 			for (int y = 0; y < sizeY; y++) {
 				for (int z = 0; z < sizeZ; z++) {
-					pos[i++] = indexOf(texturesMap[x][y][z]);
+					pos[i++] = (byte) indexOf(texturesMap[x][y][z]);
 				}
 			}
 		}
