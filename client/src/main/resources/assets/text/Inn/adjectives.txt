@@ -1,100 +1,100 @@
-Red
-Scarlet
-Crimson
-Orange
-Marigold
-Copper
-Yellow
-Golden
-Green
-Aqua
-Blue
-Purple
-Silver
-Black
-Dark
-White
-Fat
-Skinny
-Short
-Nimble
-Wide
-Crafty
-Wise
-Dairy
-Glowing
-Running
-Flying
-Old
-Leaping
-Prancing
-Flatulent
-Prickly
-Wailing
-Bitter
-Drowsy
-Ginger
-Whomping
-Slippery
-Greasy
-Shaggy
-Deadly
-Moaning
-Whispering
-Whimpering
-Hissing
-Tarnished
-Great
-Scrawny
-Rotund
-Crooked
-Sturdy
-Singing
-Dancing
-Shiny
-Able
-Wrathful
-Greedy
-Gluttonous
-Lusty
-Jealous
-Prideful
-Lazy
-Drunken
-Valiant
-Vigorous
-Silky
-Waxy
-Weaping
-Dripping
-Crusty
-Ricketty
-Smokey
-Watchful
-Twisted
-Sleeping
-Baleful
-Wooden
-Iron
-Icy
-Brave
-Broken
-Bulbous
-Grand
-Simmering
-Leaky
-Seasoned
-Blossoming
-Crumbling
-Tumbling
-Tricky
-Juggling
-Wishing
-Dreary
-Tipping
-Bloodied
-Salty
-Laughing
-Battered
-Ferocious
-Saucy
+1 leaky
+2 bulbous
+2 crusty
+2 drunken
+2 flatulent
+2 ginger
+2 lusty
+2 moaning
+2 tipping
+2 tricky
+3 deadly
+3 dreary
+3 dripping
+3 gluttonous
+3 greasy
+3 greedy
+3 jealous
+3 lazy
+3 prickly
+3 running
+3 salty
+3 slippery
+3 waxy
+3 wooden
+3 wrathful
+4 bitter
+4 burning
+4 copper
+4 crafty
+4 crumbling
+4 dairy
+4 fat
+4 gasping
+4 hissing
+4 prideful
+4 ricketty
+4 saucy
+4 seasoned
+4 shaggy
+4 sturdy
+4 tumbling
+4 whimpering
+5 blue
+5 broken
+5 ferocious
+5 green
+5 laughing
+5 orange
+5 purple
+5 red
+5 rotund
+5 scrawy
+5 short
+5 simmering
+5 skinny
+5 smokey
+5 vigorous
+5 wailing
+5 wishing
+5 yellow
+6 baleful
+6 battered
+6 crooked
+6 dancing
+6 dark
+6 drowsy
+6 galloping
+6 glowing
+6 iron
+6 leaping
+6 nimble
+6 shimmering
+6 tarnished
+6 twisted
+6 weaping
+6 whispering
+6 whomping
+6 wide
+7 black
+7 bloodied
+7 flying
+7 juggling
+7 marigold
+7 old
+7 prancing
+7 singing
+7 valiant
+7 watchful
+7 wise
+8 blossoming
+8 brave
+8 crimson
+8 lavender
+8 sleeping
+8 white
+9 golden
+9 grand
+9 great
+9 scarlet
+9 silver

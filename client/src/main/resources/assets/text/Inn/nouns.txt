@@ -1,100 +1,100 @@
-Rose
-Thorn
-Hog
-Woman
-Giant
-Cactus
-Horse
-Donkey
-Mule
-Candle
-Spoon
-Keg
-Barrel
-Farmer
-Baker
-Watchman
-Castle
-Elephant
-Goblet
-King
-Queen
-Knight
-Bishop
-Squire
-Rabbit
-Squirrel
-Mutton
-Thief
-Willow
-Oak
-Lumberjack
-Daughter
-Mug
-Cream
-Maid
-Carrot
-Pumpkin
-Cow
-Lion
-Death
-Sun
-Moon
-Star
-Ghost
-Pond
-Sword
-Dagger
-Mace
-Arrow
-Whombat
-Gateway
-Pasture
-Butcher
-Drunk
-Clam
-Pony
-Goblin
-Widdow
-Cauldron
-Trail
-Crab
-Bones
-Ship
-Skiff
-Flag
-Wall
-Shore
-Fool
-Oaf
-Whip
-Gourd
-Well
-Bed
-Vine
-Flower
-Trumpet
-Drums
-Loot
-Bard
-Dragon
-Flame
-Lantern
-Codger
-Maiden
-Wizard
-Archer
-Witch
-Toad
-Wand
-Bushel
-Bridge
-Troll
-Basket
-Dream
-Chamberpot
-Tower
-Bucket
-Scythe
-Field
-Mare
+0 cream
+1 chamberpot
+2 carrot
+2 keg
+2 mutton
+2 whip
+2 whombat
+3 barrel
+3 bones
+3 butcher
+3 death
+3 drunk
+3 farmer
+3 fool
+3 giant
+3 hog
+3 mug
+3 oaf
+3 pumpkin
+3 spoon
+3 thief
+3 toad
+3 troll
+3 wand
+4 basket
+4 bed
+4 cactus
+4 clam
+4 codger
+4 cow
+4 crab
+4 daughter
+4 goblin
+4 mace
+4 maid
+4 pasture
+4 skiff
+4 witch
+4 woman
+5 bushel
+5 cauldron
+5 dagger
+5 donkey
+5 elephant
+5 field
+5 ghost
+5 gourd
+5 lumberjack
+5 mule
+5 pony
+5 thorn
+5 wizard
+6 arrow
+6 baker
+6 bucket
+6 candle
+6 dream
+6 loot
+6 mare
+6 rabbit
+6 ship
+6 squirrel
+6 sword
+6 watchman
+6 widdow
+7 archer
+7 bridge
+7 dragon
+7 flag
+7 flame
+7 goblet
+7 horse
+7 maiden
+7 oak
+7 pond
+7 squire
+7 star
+7 tower
+7 trail
+7 vine
+7 wall
+7 well
+7 willow
+8 bard
+8 bell
+8 bishop
+8 drums
+8 gateway
+8 knight
+8 moon
+8 shore
+9 castle
+9 flower
+9 king
+9 lantern
+9 lion
+9 queen
+9 rose
+9 sun
+9 trumpet
