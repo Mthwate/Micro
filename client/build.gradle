@@ -6,6 +6,7 @@ dependencies {
 	compile project(':engine')
 	compile "com.jme3:jme3-lwjgl:$jme_version"
 	compile "com.jme3:jme3-blender:$jme_version"
+	compile "com.jme3:jme3-effects:$jme_version"
 	compile 'org.apache.commons:commons-lang3:3.4'
 }
 

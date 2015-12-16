@@ -38,10 +38,12 @@ public class Chunk {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
 				for (int z = 0; z < CHUNK_SIZE; z++) {
 					if (blocks[x][y][z].isSolid()) {
-						Geometry geom = new Geometry();
-						geom.setMesh(BOX_MESH);
-						geom.setLocalTranslation(x, y, z);
-						node.attachChild(geom);
+						if (!tmp(x+1, y, z) || !tmp(x-1, y, z) || !tmp(x, y+1, z) || !tmp(x, y-1, z) || !tmp(x, y, z+1) || !tmp(x-1, y, z)) {
+							Geometry geom = new Geometry();
+							geom.setMesh(BOX_MESH);
+							geom.setLocalTranslation(x, y, z);
+							node.attachChild(geom);
+						}
 					}
 				}
 			}
@@ -52,6 +54,13 @@ public class Chunk {
 		node.setLocalTranslation(pos.getX() * CHUNK_SIZE, pos.getY() * CHUNK_SIZE, pos.getZ() * CHUNK_SIZE);
 
 		return node;
+	}
+
+	private boolean tmp(int x, int y, int z) {
+		if (x < 0 || x >= CHUNK_SIZE || y < 0 || y >= CHUNK_SIZE || z < 0 || z >= CHUNK_SIZE) {
+			return false;
+		}
+		return blocks[x][y][z].isSolid();
 	}
 
 	public boolean hasUpdated(long lastCheck) {

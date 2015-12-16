@@ -3,9 +3,8 @@ package com.mthwate.conk.state;
 import com.jme3.network.HostedConnection;
 import com.mthwate.conk.PositionUtils;
 import com.mthwate.conk.block.Block;
-import com.mthwate.conk.message.BlockUpdateMessage;
+import com.mthwate.conk.message.ChunkUpdateMessage;
 import com.mthwate.conk.message.ClearGroupMessage;
-import com.mthwate.conk.message.GroupUpdateMessage;
 import com.mthwate.conk.user.User;
 import com.mthwate.conk.user.UserStore;
 import com.mthwate.conk.world.Chunk;
@@ -101,12 +100,12 @@ public class WorldUpdateProcessor implements Callable<Queue<WorldUpdate>> {
 
 			for (Vector3i pos :newChunks) {
 				dim.hasUpdated(pos, 0);//TODO use a new load chunk method
-				updateChunk(messages, user.getConnection(), pos);
+				updateChunk(messages, user.getConnection(), pos, true);
 			}
 
 			for (Vector3i pos : sameChunks) {
 				if (dim.hasUpdated(pos, lastTime)) {
-					updateChunk(messages, user.getConnection(), pos);
+					updateChunk(messages, user.getConnection(), pos, false);
 				}
 			}
 		}
@@ -114,36 +113,28 @@ public class WorldUpdateProcessor implements Callable<Queue<WorldUpdate>> {
 		return messages;
 	}
 
-	private void updateChunk(Queue<WorldUpdate> messages, HostedConnection connection, Vector3i chunkPos) {
+	private void updateChunk(Queue<WorldUpdate> messages, HostedConnection connection, Vector3i chunkPos, boolean ignoreAir) {
 		Vector3i basePos = chunkPos.multiply(Chunk.CHUNK_SIZE);
-		List<BlockUpdateMessage> updates = new ArrayList<>((int) Math.pow(Chunk.CHUNK_SIZE, 3));
+
+		String[][][][] texturesMap = new String[Chunk.CHUNK_SIZE][Chunk.CHUNK_SIZE][Chunk.CHUNK_SIZE][];
+
 		for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 			for (int y = 0; y < Chunk.CHUNK_SIZE; y++) {
 				for (int z = 0; z < Chunk.CHUNK_SIZE; z++) {
 					Vector3i pos = basePos.add(x, y, z);
-					if (isVisible(pos)) {
-						Block block = dim.getBlock(pos);
-						String[] textures = block.getTextures();
-						if (textures.length > 0) {
-							updates.add(new BlockUpdateMessage(pos, textures));
-						}
-					}
+					Block block = dim.getBlock(pos);
+					texturesMap[x][y][z] = block.getTextures();
 				}
 			}
 		}
 
-		int start = 0;
-		while (start < updates.size()) {
-			int end = Math.min(start + 512, updates.size());
-			BlockUpdateMessage[] updateArray = new BlockUpdateMessage[end - start];
-			for (int i = start; i < end; i++) {
-				updateArray[i - start] = updates.get(i);
-			}
-			messages.add(new WorldUpdate(connection, new GroupUpdateMessage(updateArray)));
-			start = end;
-		}
+		messages.add(new WorldUpdate(connection, new ChunkUpdateMessage(texturesMap, basePos, new Vector3i(Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE))));
 	}
 
+	private boolean onEdge(int x, int y, int z) {
+		return x == 0 || y == 0 || z == 0 || x == Chunk.CHUNK_SIZE - 1 || y == Chunk.CHUNK_SIZE - 1 || z == Chunk.CHUNK_SIZE - 1;
+	}
+	
 	private boolean isVisible(Vector3i pos) {
 
 		if (dim.getBlock(pos.add(1, 0, 0)).isTransparent()) {

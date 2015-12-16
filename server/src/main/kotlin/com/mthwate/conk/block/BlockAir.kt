@@ -6,7 +6,7 @@ import com.mthwate.conk.command.Exec
  * @author mthwate
  */
 @Exec
-class BlockAir : BlockBase("air") {
+class BlockAir : AbstractBlock("air") {
 
 	override val isSolid: Boolean
 		get() = false

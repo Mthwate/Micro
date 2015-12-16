@@ -104,7 +104,7 @@ public class ServerApp extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf) {
-		if (tpf * 20 > 1) {
+		if (tpf * 30 > 1) {
 			log.info("Tick took too long ({} sec)", tpf);
 		}
 	}

@@ -19,7 +19,7 @@ public class FlatWorldGenerator implements WorldGenerator {
 				for (int iz = 0; iz < Chunk.CHUNK_SIZE; iz++) {
 					Block block;
 					if (chunkPos.getY() < 0) {
-						block = BlockStore.getBlock("dirt");
+						block = BlockStore.getBlock("topsoil");
 					} else {
 						block = BlockStore.getBlock("air");
 					}

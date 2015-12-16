@@ -3,7 +3,7 @@ package com.mthwate.conk.block
 /**
  * @author mthwate
  */
-abstract class BlockBase(override val name: String) : Block {
+abstract class AbstractBlock(override val name: String) : Block {
 
 	override val isSolid: Boolean
 		get() = true
