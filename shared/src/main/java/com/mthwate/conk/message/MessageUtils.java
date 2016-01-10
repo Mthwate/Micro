@@ -16,6 +16,7 @@ public class MessageUtils {
 		Serializer.registerClass(BlockBreakMessage.class);
 		Serializer.registerClass(ClearGroupMessage.class);
 		Serializer.registerClass(ChunkUpdateMessage.class);
+		Serializer.registerClass(PlayerPropertiesMessage.class);
 	}
 
 }
