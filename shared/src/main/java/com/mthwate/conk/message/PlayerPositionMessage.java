@@ -10,16 +10,20 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class PlayerPositionMessage extends AbstractMessage {
 
-	private Vector3f position;
+	private float x;
+	private float y;
+	private float z;
 
 	public PlayerPositionMessage() {}
 
 	public PlayerPositionMessage(Vector3f position) {
-		this.position = position;
+		this.x = position.getX();
+		this.y = position.getY();
+		this.z = position.getZ();
 	}
 
 	public Vector3f getPosition() {
-		return position;
+		return new Vector3f(x, y, z);
 	}
 
 }
