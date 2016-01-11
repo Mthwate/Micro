@@ -13,8 +13,8 @@ public class MoveListener extends AbstractServerListener<MoveMessage> {
 
 	@Override
 	protected void onReceived(HostedConnection source, MoveMessage m) {
-		BetterCharacterControl conrol = UserStore.getUser(source).getControl();
-		conrol.setWalkDirection(new Vector3f(m.getX(), 0, m.getZ()));
+		BetterCharacterControl control = UserStore.getUser(source).getControl();
+		control.setWalkDirection(new Vector3f(m.getX(), 0, m.getZ()));
 	}
 
 }
