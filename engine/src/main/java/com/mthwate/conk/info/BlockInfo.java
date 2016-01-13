@@ -13,29 +13,35 @@ public class BlockInfo {
 
 	private final String model;
 
+	/**
+	 * The ammount of light this block emits.
+	 */
 	private final Vector3f light;
 
+	private final boolean solid;
+
 	public BlockInfo(TextureInfo textureInfo) {
-		this(textureInfo, new MaterialInfo(), null, null);
+		this(textureInfo, new MaterialInfo(), null, null, true);
 	}
 
 	public BlockInfo(TextureInfo textureInfo, Vector3f light) {
-		this(textureInfo, new MaterialInfo(), null, light);
+		this(textureInfo, new MaterialInfo(), null, light, true);
 	}
 
 	public BlockInfo(TextureInfo textureInfo, MaterialInfo materialInfo) {
-		this(textureInfo, materialInfo, null, null);
+		this(textureInfo, materialInfo, null, null, true);
 	}
 
 	public BlockInfo(TextureInfo textureInfo, String model) {
-		this(textureInfo, new MaterialInfo(), model, null);
+		this(textureInfo, new MaterialInfo(), model, null, true);
 	}
 
-	public BlockInfo(TextureInfo textureInfo, MaterialInfo materialInfo, String model, Vector3f light) {
+	public BlockInfo(TextureInfo textureInfo, MaterialInfo materialInfo, String model, Vector3f light, boolean solid) {
 		this.textureInfo = textureInfo;
 		this.materialInfo = materialInfo;
 		this.model = model;
 		this.light = light;
+		this.solid = solid;
 	}
 
 	public TextureInfo getTextureInfo() {
@@ -56,5 +62,9 @@ public class BlockInfo {
 
 	public float getLightFalloff() {
 		return 0.05f;
+	}
+
+	public boolean isSolid() {
+		return solid;
 	}
 }

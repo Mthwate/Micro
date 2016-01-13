@@ -3,9 +3,16 @@ package com.mthwate.conk.state;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.network.Client;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.CameraNode;
+import com.jme3.scene.Node;
+import com.jme3.scene.control.CameraControl;
+import com.mthwate.conk.physics.ConkCharacterControl;
 import com.mthwate.conk.message.MoveMessage;
 
 /**
@@ -19,35 +26,33 @@ public class MovementAppState extends AbstractAppState {
 	private static boolean left;
 
 	private final Client client;
-
 	private Camera cam;
+	private BetterCharacterControl control;
+	private final BulletAppState bulletAppState;
+	private final Node camRootNode;
 
 	private Vector2f prev = Vector2f.ZERO;
 
-	public static void setForward(boolean on) {
-		forward = on;
-	}
-
-	public static void setBackward(boolean on) {
-		backward = on;
-	}
-
-	public static void setRight(boolean on) {
-		right = on;
-	}
-
-	public static void setLeft(boolean on) {
-		left = on;
-	}
-
-	public MovementAppState(Client client) {
+	public MovementAppState(Client client, BulletAppState bulletAppState, Node camRootNode) {
 		this.client = client;
+		this.bulletAppState = bulletAppState;
+		this.camRootNode = camRootNode;
+	}
+
+	public void initControl(float radius, float height, float mass) {
+		control = new ConkCharacterControl(radius, height, mass);
+		CameraNode camNode = new CameraNode("Camera Node", cam);
+		camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
+		camRootNode.attachChild(camNode);
+		camNode.setLocalTranslation(new Vector3f(0, height * 0.975f, 0));
+		camNode.addControl(control);
+		bulletAppState.getPhysicsSpace().add(control);
 	}
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-		this.cam = app.getCamera();
+		cam = app.getCamera();
 	}
 
 	@Override
@@ -79,10 +84,27 @@ public class MovementAppState extends AbstractAppState {
 			direction.addLocal(camLeft.getX(), camLeft.getY());
 		}
 
-		if (!direction.equals(prev)) {
+		if (control != null && !direction.equals(prev)) {
 			prev = direction;
 			client.send(new MoveMessage(direction.getX(), direction.getY()));
+			control.setWalkDirection(new Vector3f(direction.getX(), 0, direction.getY()));
 		}
+	}
+
+	public static void setForward(boolean on) {
+		forward = on;
+	}
+
+	public static void setBackward(boolean on) {
+		backward = on;
+	}
+
+	public static void setRight(boolean on) {
+		right = on;
+	}
+
+	public static void setLeft(boolean on) {
+		left = on;
 	}
 
 }

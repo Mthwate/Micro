@@ -3,7 +3,11 @@ package com.mthwate.conk;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.control.Control;
 import com.mthwate.conk.info.BlockInfo;
 import com.mthwate.datlib.math.vector.Vector3i;
 import org.slf4j.Logger;
@@ -29,11 +33,17 @@ public class World extends AbstractAppState implements Closeable {
 
 	private final Map<Vector3i, LightMap> lightMaps = Collections.synchronizedMap(new HashMap<Vector3i, LightMap>());
 
-	private final Node node = new Node();
+	private final Node rootNode = new Node();
 
 	private NodeGenThread nodeGenThread;
 
 	private long lastTime = 0;
+
+	private final BulletAppState bulletAppState;
+
+	public World(BulletAppState bulletAppState) {
+		this.bulletAppState = bulletAppState;
+	}
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
@@ -43,7 +53,7 @@ public class World extends AbstractAppState implements Closeable {
 	}
 
 	public Node getNode() {
-		return node;
+		return rootNode;
 	}
 
 	@Override
@@ -98,9 +108,22 @@ public class World extends AbstractAppState implements Closeable {
 		} else {
 
 			for (Map.Entry<Vector3i, Node> entry : nodeGenThread.getDone().entrySet()) {
-				node.detachChildNamed(entry.getKey().toString());
+
+				Spatial chunkNode = rootNode.getChild(entry.getKey().toString());
+
+				if (chunkNode != null) {
+					for (int i = 0; i < chunkNode.getNumControls(); i++) {
+						Control control = chunkNode.getControl(i);
+						chunkNode.removeControl(control);
+						bulletAppState.getPhysicsSpace().remove(control);
+					}
+
+					chunkNode.removeFromParent();
+				}
+
 				if (entry.getValue().getChildren().size() > 0) {
-					node.attachChild(entry.getValue());
+					bulletAppState.getPhysicsSpace().add(entry.getValue().getControl(RigidBodyControl.class));
+					rootNode.attachChild(entry.getValue());
 				}
 			}
 		}

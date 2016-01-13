@@ -4,7 +4,6 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.network.Client;
-import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.mthwate.conk.message.PlayerPositionMessage;
 
@@ -13,12 +12,12 @@ import com.mthwate.conk.message.PlayerPositionMessage;
  */
 public class PlayerPositionListener extends AbstractClientListener<PlayerPositionMessage>  {
 
-	private final Camera cam;
+	private final Node camNode;
 
 	private final BitmapText hudText;
 
-	public PlayerPositionListener(Camera cam, Node guiNode, BitmapFont guiFont) {
-		this.cam = cam;
+	public PlayerPositionListener(Node camNode, Node guiNode, BitmapFont guiFont) {
+		this.camNode = camNode;
 
 		hudText = new BitmapText(guiFont, false);
 		hudText.setSize(guiFont.getCharSet().getRenderedSize());
@@ -29,9 +28,8 @@ public class PlayerPositionListener extends AbstractClientListener<PlayerPositio
 
 	@Override
 	protected void onReceived(Client source, PlayerPositionMessage m) {
-		cam.setLocation(m.getPosition().add(0, 1.75f - 0.1f, 0));
-
-		hudText.setText(String.format("(%.2f, %.2f, %.2f)", cam.getLocation().getX(), cam.getLocation().getY(), cam.getLocation().getZ()));
+		camNode.setLocalTranslation(m.getPosition());
+		hudText.setText(String.format("(%.2f, %.2f, %.2f)", camNode.getLocalTranslation().getX(), camNode.getLocalTranslation().getY(), camNode.getLocalTranslation().getZ()));
 	}
 
 }

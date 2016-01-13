@@ -2,10 +2,12 @@ package com.mthwate.conk;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ClasspathLocator;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.font.BitmapText;
 import com.jme3.network.Client;
 import com.jme3.network.Network;
 import com.jme3.network.kernel.KernelException;
+import com.jme3.scene.Node;
 import com.jme3.scene.plugins.blender.BlenderModelLoader;
 import com.mthwate.conk.action.ActionUtils;
 import com.mthwate.conk.action.JumpAction;
@@ -18,13 +20,16 @@ import com.mthwate.conk.listener.BlockUpdateListener;
 import com.mthwate.conk.listener.ChunkUpdateListener;
 import com.mthwate.conk.listener.ClearGroupListener;
 import com.mthwate.conk.listener.PlayerPositionListener;
+import com.mthwate.conk.listener.PlayerPropertiesListener;
 import com.mthwate.conk.message.BlockUpdateMessage;
 import com.mthwate.conk.message.ChunkUpdateMessage;
 import com.mthwate.conk.message.ClearGroupMessage;
 import com.mthwate.conk.message.LoginMessage;
 import com.mthwate.conk.message.MessageUtils;
 import com.mthwate.conk.message.PlayerPositionMessage;
+import com.mthwate.conk.message.PlayerPropertiesMessage;
 import com.mthwate.conk.state.MovementAppState;
+import com.mthwate.datlib.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,9 +69,6 @@ public class ClientApp extends SimpleApplication {
 
 			cam.setFrustumPerspective(45f, (float)cam.getWidth() / cam.getHeight(), 0.001f, 1000f);
 
-			WorldStore.init(stateManager, rootNode);
-			WorldStore.setWorld(new World());
-
 			ActionUtils.register(inputManager, new LeftClickAction(cam, WorldStore.getWorld(), client));
 			//ActionUtils.register(inputManager, new RightClickAction(cam, world));
 			ActionUtils.register(inputManager, new JumpAction(client));
@@ -76,13 +78,27 @@ public class ClientApp extends SimpleApplication {
 			ActionUtils.register(inputManager, new MoveLeftAction());
 
 
-			stateManager.attach(new MovementAppState(client));
+
+
+			BulletAppState bulletAppState = new BulletAppState();
+			stateManager.attach(bulletAppState);
+
+			WorldStore.init(stateManager, rootNode);
+			WorldStore.setWorld(new World(bulletAppState));
+
+
+			Node camNode = new Node();
+
+			MovementAppState movementAppState = new MovementAppState(client, bulletAppState, camNode);
+
+			stateManager.attach(movementAppState);
 
 
 			client.addMessageListener(new BlockUpdateListener(), BlockUpdateMessage.class);
 			client.addMessageListener(new ChunkUpdateListener(), ChunkUpdateMessage.class);
 			client.addMessageListener(new ClearGroupListener(), ClearGroupMessage.class);
-			client.addMessageListener(new PlayerPositionListener(cam, guiNode, guiFont), PlayerPositionMessage.class);
+			client.addMessageListener(new PlayerPositionListener(camNode, guiNode, guiFont), PlayerPositionMessage.class);
+			client.addMessageListener(new PlayerPropertiesListener(movementAppState), PlayerPropertiesMessage.class);
 
 
 			initCrossHairs();
@@ -137,7 +153,7 @@ public class ClientApp extends SimpleApplication {
 	@Override
 	public void destroy() {
 
-		WorldStore.getWorld().close();
+		IOUtils.close(WorldStore.getWorld());
 
 		if (client != null && client.isConnected()) {
 			client.close();
