@@ -8,7 +8,6 @@ import com.mthwate.conk.command.Exec
 @Exec
 class BlockDirt() : AbstractBlock("topsoil") {
 
-	override val textures: Array<String>
-		get() = arrayOf(name, name + "Side")
+	override val textures = arrayOf(name, name + "Side")
 
 }

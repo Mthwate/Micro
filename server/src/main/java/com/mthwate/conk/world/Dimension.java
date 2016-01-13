@@ -44,13 +44,13 @@ public class Dimension {
 	public Block getBlock(int x, int y, int z) {
 		int size = Chunk.CHUNK_SIZE;
 
-		int cx = PositionUtils.getChunkFromGlobal(x, size);
-		int cy = PositionUtils.getChunkFromGlobal(y, size);
-		int cz = PositionUtils.getChunkFromGlobal(z, size);
+		int cx = PositionUtils.INSTANCE.getChunkFromGlobal(x, size);
+		int cy = PositionUtils.INSTANCE.getChunkFromGlobal(y, size);
+		int cz = PositionUtils.INSTANCE.getChunkFromGlobal(z, size);
 
-		int lx = PositionUtils.getLocalFromGlobal(x, size);
-		int ly = PositionUtils.getLocalFromGlobal(y, size);
-		int lz = PositionUtils.getLocalFromGlobal(z, size);
+		int lx = PositionUtils.INSTANCE.getLocalFromGlobal(x, size);
+		int ly = PositionUtils.INSTANCE.getLocalFromGlobal(y, size);
+		int lz = PositionUtils.INSTANCE.getLocalFromGlobal(z, size);
 
 		return getChunk(cx, cy, cz).get(lx, ly, lz);
 	}
@@ -84,13 +84,13 @@ public class Dimension {
 	public void setBlock(Block block, int x, int y, int z) {
 		int size = Chunk.CHUNK_SIZE;
 
-		int cx = PositionUtils.getChunkFromGlobal(x, size);
-		int cy = PositionUtils.getChunkFromGlobal(y, size);
-		int cz = PositionUtils.getChunkFromGlobal(z, size);
+		int cx = PositionUtils.INSTANCE.getChunkFromGlobal(x, size);
+		int cy = PositionUtils.INSTANCE.getChunkFromGlobal(y, size);
+		int cz = PositionUtils.INSTANCE.getChunkFromGlobal(z, size);
 
-		int lx = PositionUtils.getLocalFromGlobal(x, size);
-		int ly = PositionUtils.getLocalFromGlobal(y, size);
-		int lz = PositionUtils.getLocalFromGlobal(z, size);
+		int lx = PositionUtils.INSTANCE.getLocalFromGlobal(x, size);
+		int ly = PositionUtils.INSTANCE.getLocalFromGlobal(y, size);
+		int lz = PositionUtils.INSTANCE.getLocalFromGlobal(z, size);
 
 		getChunk(cx, cy, cz).set(block, lx, ly, lz);
 	}

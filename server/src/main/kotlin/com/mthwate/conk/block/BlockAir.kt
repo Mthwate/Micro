@@ -8,13 +8,10 @@ import com.mthwate.conk.command.Exec
 @Exec
 class BlockAir : AbstractBlock("air") {
 
-	override val isSolid: Boolean
-		get() = false
+	override val isSolid = false
 
-	override val isTransparent: Boolean
-		get() = true
+	override val isTransparent = true
 
-	override val textures: Array<String>
-		get() = arrayOf()
+	override val textures: Array<String> = arrayOf()
 
 }

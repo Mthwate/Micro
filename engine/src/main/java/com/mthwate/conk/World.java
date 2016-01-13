@@ -186,11 +186,11 @@ public class World extends AbstractAppState implements Closeable {
 	}
 
 	private static int getLocal(int i) {
-		return PositionUtils.getLocalFromGlobal(i, CHUNK_SIZE);
+		return PositionUtils.INSTANCE.getLocalFromGlobal(i, CHUNK_SIZE);
 	}
 
 	private static int getChunk(int i) {
-		return PositionUtils.getChunkFromGlobal(i, CHUNK_SIZE);
+		return PositionUtils.INSTANCE.getChunkFromGlobal(i, CHUNK_SIZE);
 	}
 
 	public void updateMarkChunk(Vector3i pos) {

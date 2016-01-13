@@ -46,11 +46,11 @@ public class WorldUpdateProcessor implements Callable<Queue<WorldUpdate>> {
 	public Queue<WorldUpdate> call() {
 		Queue<WorldUpdate> messages = new LinkedList<>();
 
-		for (User user : UserStore.getUsers()) {
+		for (User user : UserStore.INSTANCE.getUsers()) {
 
-			int x = PositionUtils.getChunkFromGlobal((int) user.getPosition().getX(), Chunk.CHUNK_SIZE);
-			int y = PositionUtils.getChunkFromGlobal((int) user.getPosition().getY(), Chunk.CHUNK_SIZE);
-			int z = PositionUtils.getChunkFromGlobal((int) user.getPosition().getZ(), Chunk.CHUNK_SIZE);
+			int x = PositionUtils.INSTANCE.getChunkFromGlobal((int) user.getPosition().getX(), Chunk.CHUNK_SIZE);
+			int y = PositionUtils.INSTANCE.getChunkFromGlobal((int) user.getPosition().getY(), Chunk.CHUNK_SIZE);
+			int z = PositionUtils.INSTANCE.getChunkFromGlobal((int) user.getPosition().getZ(), Chunk.CHUNK_SIZE);
 
 			Vector3i chunkPos = new Vector3i(x, y, z);
 

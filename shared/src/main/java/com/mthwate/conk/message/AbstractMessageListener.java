@@ -9,12 +9,12 @@ import com.jme3.network.MessageListener;
  */
 public abstract class AbstractMessageListener<S extends MessageConnection, T extends Message> implements MessageListener<S> {
 
-	protected abstract void onReceived(S source, T m);
+	protected abstract void onReceived(S src, T msg);
 
 	@Override
-	public void messageReceived(S source, Message m) {
-		T message = (T) m;//TODO gracefully handle this
-		onReceived(source, message);
+	public void messageReceived(S src, Message msg) {
+		T message = (T) msg;//TODO gracefully handle this
+		onReceived(src, message);
 	}
 
 }

@@ -12,8 +12,8 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.CameraControl;
-import com.mthwate.conk.physics.ConkCharacterControl;
 import com.mthwate.conk.message.MoveMessage;
+import com.mthwate.conk.physics.ConkCharacterControl;
 
 /**
  * @author mthwate
@@ -41,12 +41,12 @@ public class MovementAppState extends AbstractAppState {
 
 	public void initControl(float radius, float height, float mass) {
 		control = new ConkCharacterControl(radius, height, mass);
+		camRootNode.addControl(control);
+		bulletAppState.getPhysicsSpace().add(control);
 		CameraNode camNode = new CameraNode("Camera Node", cam);
 		camNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
 		camRootNode.attachChild(camNode);
 		camNode.setLocalTranslation(new Vector3f(0, height * 0.975f, 0));
-		camNode.addControl(control);
-		bulletAppState.getPhysicsSpace().add(control);
 	}
 
 	@Override

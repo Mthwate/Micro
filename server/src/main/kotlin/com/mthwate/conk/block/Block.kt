@@ -12,4 +12,5 @@ interface Block {
 	val isTransparent: Boolean
 
 	val textures: Array<String>
+
 }

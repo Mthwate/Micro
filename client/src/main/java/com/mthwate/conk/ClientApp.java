@@ -87,6 +87,7 @@ public class ClientApp extends SimpleApplication {
 			WorldStore.setWorld(new World(bulletAppState));
 
 
+
 			Node camNode = new Node();
 
 			MovementAppState movementAppState = new MovementAppState(client, bulletAppState, camNode);
