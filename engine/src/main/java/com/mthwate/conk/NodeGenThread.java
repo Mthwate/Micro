@@ -1,6 +1,7 @@
 package com.mthwate.conk;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Node;
 import com.mthwate.datlib.math.vector.Vector3i;
 
@@ -37,6 +38,10 @@ public class NodeGenThread extends Thread implements Closeable {
 				Task task = tasks.get(0);
 				tasks.remove(task);
 				Node node = ChunkUtils.genNode(task.chunk, assetManager, world, task.pos, task.light);
+
+				RigidBodyControl nodeControl = new RigidBodyControl(0.0f);
+				node.addControl(nodeControl);
+
 				synchronized (this.done) {
 					done.put(task.pos, node);
 				}

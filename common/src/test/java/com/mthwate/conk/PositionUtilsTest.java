@@ -12,7 +12,7 @@ public class PositionUtilsTest {
 	public void test() {
 		for (int size = 1; size <= 16; size++) {
 			for (int i = -100; i <= 100; i++) {
-				Assert.assertEquals(i, PositionUtils.getChunkFromGlobal(i, size) * size + PositionUtils.getLocalFromGlobal(i, size));
+				Assert.assertEquals(i, PositionUtils.INSTANCE.getChunkFromGlobal(i, size) * size + PositionUtils.INSTANCE.getLocalFromGlobal(i, size));
 			}
 		}
 	}

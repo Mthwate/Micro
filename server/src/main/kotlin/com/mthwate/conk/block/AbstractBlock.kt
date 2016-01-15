@@ -5,13 +5,10 @@ package com.mthwate.conk.block
  */
 abstract class AbstractBlock(override val name: String) : Block {
 
-	override val isSolid: Boolean
-		get() = true
+	override val isSolid = true
 
-	override val isTransparent: Boolean
-		get() = false
+	override val isTransparent = false
 
-	override val textures: Array<String>
-		get() = arrayOf(name)
+	override val textures = arrayOf(name)
 
 }

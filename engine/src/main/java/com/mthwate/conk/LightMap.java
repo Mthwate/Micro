@@ -149,25 +149,25 @@ public class LightMap {
 		}
 
 		private void setLight(int x, int y, int z, Vector3f val) {
-			Vector3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
+			Vector3i cPos = PositionUtils.INSTANCE.getChunkFromGlobal(x, y, z, size);
 
 			LightChunk chunk = getGenChunk(cPos);
 
-			int lx = PositionUtils.getLocalFromGlobal(x, size);
-			int ly = PositionUtils.getLocalFromGlobal(y, size);
-			int lz = PositionUtils.getLocalFromGlobal(z, size);
+			int lx = PositionUtils.INSTANCE.getLocalFromGlobal(x, size);
+			int ly = PositionUtils.INSTANCE.getLocalFromGlobal(y, size);
+			int lz = PositionUtils.INSTANCE.getLocalFromGlobal(z, size);
 
 			chunk.setLight(lx, ly, lz, val);
 		}
 
 		private Vector3f getLight(int x, int y, int z) {
-			Vector3i cPos = PositionUtils.getChunkFromGlobal(x, y, z, size);
+			Vector3i cPos = PositionUtils.INSTANCE.getChunkFromGlobal(x, y, z, size);
 
 			LightChunk chunk = getGenChunk(cPos);
 
-			int lx = PositionUtils.getLocalFromGlobal(x, size);
-			int ly = PositionUtils.getLocalFromGlobal(y, size);
-			int lz = PositionUtils.getLocalFromGlobal(z, size);
+			int lx = PositionUtils.INSTANCE.getLocalFromGlobal(x, size);
+			int ly = PositionUtils.INSTANCE.getLocalFromGlobal(y, size);
+			int lz = PositionUtils.INSTANCE.getLocalFromGlobal(z, size);
 
 			return chunk.getLight(lx, ly, lz);
 		}

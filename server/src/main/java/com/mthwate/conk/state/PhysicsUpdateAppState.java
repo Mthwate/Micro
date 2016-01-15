@@ -64,13 +64,13 @@ public class PhysicsUpdateAppState extends TimedAppState {
 
 		statistics.set("startCache", chunks.size());
 
-		for (User user : UserStore.getUsers()) {
+		for (User user : UserStore.INSTANCE.getUsers()) {
 
 			Vector3f pos = user.getPosition();
 
-			int cx = PositionUtils.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
-			int cy = PositionUtils.getChunkFromGlobal((int) pos.getY(), Chunk.CHUNK_SIZE);
-			int cz = PositionUtils.getChunkFromGlobal((int) pos.getZ(), Chunk.CHUNK_SIZE);
+			int cx = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
+			int cy = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getY(), Chunk.CHUNK_SIZE);
+			int cz = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getZ(), Chunk.CHUNK_SIZE);
 
 			for (int x = -INNER_RADIUS; x <= INNER_RADIUS; x++) {
 				for (int y = -INNER_RADIUS; y <= INNER_RADIUS; y++) {
@@ -99,13 +99,13 @@ public class PhysicsUpdateAppState extends TimedAppState {
 
 			List<Vector3i> updates = new ArrayList<>();
 
-			for (User user : UserStore.getUsers()) {
+			for (User user : UserStore.INSTANCE.getUsers()) {
 
 				Vector3f pos = user.getPosition();
 
-				int cx = PositionUtils.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
-				int cy = PositionUtils.getChunkFromGlobal((int) pos.getY(), Chunk.CHUNK_SIZE);
-				int cz = PositionUtils.getChunkFromGlobal((int) pos.getZ(), Chunk.CHUNK_SIZE);
+				int cx = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getX(), Chunk.CHUNK_SIZE);
+				int cy = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getY(), Chunk.CHUNK_SIZE);
+				int cz = PositionUtils.INSTANCE.getChunkFromGlobal((int) pos.getZ(), Chunk.CHUNK_SIZE);
 
 				for (int x = -OUTER_RADIUS; x <= OUTER_RADIUS; x++) {
 					for (int y = -OUTER_RADIUS; y <= OUTER_RADIUS; y++) {
